@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vows & Venues — Wedding Planner</title>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@500;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f4f1f6;--card:#fff;--ink:#241b2f;--mut:#7d7287;--ac:#5e2a57;--gold:#a98440;--ln:#e3dce8;--ok:#3f7a5a}
+@media(prefers-color-scheme:dark){:root{--bg:#171220;--card:#211a2d;--ink:#f1eaf5;--mut:#a498b0;--ac:#d79bcb;--gold:#d4b06a;--ln:#352b45;--ok:#7bc79c}}
+*{box-sizing:border-box}
+body{margin:0;font:15px/1.5 'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--ink);padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+h1,h2,h3,.num{font-family:'Bodoni Moda',Georgia,serif;font-weight:500;margin:0}
+header{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--ln)}
+header h1{font-size:22px;color:var(--ac)}
+nav{display:flex;gap:4px;flex-wrap:wrap}
+nav button,.chip{background:none;border:0;padding:7px 13px;border-radius:99px;color:var(--mut);cursor:pointer;font:inherit}
+nav button.on,.chip.on{background:var(--ac);color:var(--bg)}
+main{max-width:1040px;margin:0 auto;padding:22px 16px 60px}
+.card{background:var(--card);border:1px solid var(--ln);border-radius:14px;padding:18px;margin-bottom:16px}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.big{font-size:64px;line-height:1;color:var(--ac)}
+.mut{color:var(--mut);font-size:13px}
+input,select,textarea,button.b{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--ln);border-radius:8px;padding:7px 9px;max-width:100%}
+input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid var(--gold);outline-offset:1px}
+button.b{background:var(--ac);color:var(--bg);border:0;cursor:pointer;font-weight:500;padding:8px 16px}
+button.x{background:none;border:0;color:var(--mut);cursor:pointer;font-size:18px}
+.wrap{overflow-x:auto}table{border-collapse:collapse;width:100%;min-width:640px}
+td,th{padding:4px;text-align:left;border-bottom:1px solid var(--ln);font-size:14px}th{color:var(--mut);font-weight:500}
+td input,td select{width:100%;min-width:70px;border-color:transparent;background:transparent}
+td input:hover,td select:hover{border-color:var(--ln)}td input[type=checkbox]{width:auto;min-width:0}
+.add{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.bar{height:8px;border-radius:9px;background:var(--ln);overflow:hidden;margin-top:8px}.bar i{display:block;height:100%;background:var(--gold)}
+.auth{max-width:380px;margin:9vh auto}.auth input{width:100%;margin:6px 0}
+.f{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}.f label{display:grid;gap:3px;font-size:13px;color:var(--mut)}
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:9px;display:none}
+a{color:var(--ac);cursor:pointer}
+</style></head><body>
+<div id="app"></div><div id="toast" role="status"></div>
+<script>
+const $=s=>document.querySelector(s),
+esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])),
+ls={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}},del(k){try{localStorage.removeItem(k)}catch(e){}}};
+const EV=['both','engagement','wedding'];
+const E={
+guests:{t:'Guests',c:[['name','Name'],['event','Event','sel',EV],['side','Side','sel',['shared','partner 1','partner 2']],['rsvp','RSVP','sel',['pending','yes','no']],['plus_ones','+1','number'],['meal','Meal'],['table_no','Table'],['phone','Phone']]},
+budget_items:{t:'Budget',c:[['item','Item'],['event','Event','sel',['wedding','engagement']],['category','Category'],['estimated','Estimated','number'],['actual','Actual','number'],['paid','Paid','checkbox']]},
+tasks:{t:'Checklist',c:[['done','Done','checkbox'],['title','Task'],['event','Event','sel',['wedding','engagement']],['due','Due','date']]},
+vendors:{t:'Vendors',c:[['name','Vendor'],['category','Category'],['contact','Contact'],['price','Price','number'],['status','Status','sel',['researching','contacted','booked','paid']]]}};
+let sb,user,S={},D={},tab='dashboard',flt='all',signup=false;
+const cfg=()=>{try{return JSON.parse(ls.get('wp_cfg'))}catch(e){return null}};
+function toast(m){const t=$('#toast');t.textContent=m;t.style.display='block';clearTimeout(toast.h);toast.h=setTimeout(()=>t.style.display='none',3500)}
+const KEY='wp_demo',DEF={guests:{event:'both',side:'shared',rsvp:'pending',plus_ones:0},budget_items:{paid:false,estimated:0,actual:0},tasks:{done:false},vendors:{price:0}};
+const id=()=>Math.random().toString(36).slice(2),r=(t,x)=>({id:id(),created_at:'',...x});
+let DB;try{DB=JSON.parse(ls.get(KEY))}catch(e){}
+DB=DB||{s:{},guests:[],budget_items:[],tasks:[],vendors:[]};
+const sv=()=>ls.set(KEY,JSON.stringify(DB));
+function Q(t){let op='s',pl,f;const run=()=>{if(t=='wedding_settings'){if(op=='u'){DB.s={...DB.s,...pl};sv()}return{data:DB.s,error:null}}
+const rows=DB[t];if(op=='i'){const x={id:id(),created_at:'',...DEF[t],...pl};rows.push(x);sv();return{data:x,error:null}}
+if(op=='m'){Object.assign(rows.find(x=>x.id==f),pl);sv();return{error:null}}
+if(op=='d'){DB[t]=rows.filter(x=>x.id!=f);sv();return{error:null}}return{data:rows,error:null}};
+const o={select:()=>o,order:()=>o,single:()=>o,maybeSingle:()=>o,eq:(k,v)=>(f=v,o),insert:x=>(op='i',pl=x,o),update:x=>(op='m',pl=x,o),delete:()=>(op='d',o),upsert:x=>(op='u',pl=x,o),then:(a,b)=>Promise.resolve(run()).then(a,b)};return o}
+function init(){sb={from:Q};user={id:'local',email:'Saved in this browser'};load()}
+function setup(){$('#app').innerHTML=`<div class="card auth"><h2>Connect Supabase</h2><p class="mut">Create a free project at supabase.com, run <b>schema.sql</b> in its SQL Editor, then paste Project URL and anon public key (Settings → API).</p><input id="u" placeholder="https://xxxx.supabase.co"><input id="k" placeholder="anon public key"><button class="b" onclick="saveCfg()">Connect</button></div>`}
+function saveCfg(){const url=$('#u').value.trim(),key=$('#k').value.trim();if(!/^https:\/\/.+/.test(url)||!key)return toast('Enter a valid project URL and key.');ls.set('wp_cfg',JSON.stringify({url,key}));location.reload()}
+function authView(msg=''){$('#app').innerHTML=`<div class="card auth"><h2>${signup?'Create your account':'Welcome back'}</h2><p class="mut">Plan your engagement and wedding in one private place.</p>
+<input id="em" type="email" placeholder="Email" autocomplete="email"><input id="pw" type="password" placeholder="Password (6+ characters)" autocomplete="${signup?'new':'current'}-password">
+<p class="mut" id="am">${esc(msg)}</p><button class="b" onclick="auth()">${signup?'Sign up':'Log in'}</button>
+<p class="mut"><a onclick="signup=!signup;authView()">${signup?'I already have an account':'Create an account'}</a> · <a onclick="reset()">Forgot password</a> · <a onclick="ls.del('wp_cfg');location.reload()">Change project</a></p></div>`}
+async function auth(){const email=$('#em').value.trim(),password=$('#pw').value;
+ const {data,error}=signup?await sb.auth.signUp({email,password}):await sb.auth.signInWithPassword({email,password});
+ if(error)return $('#am').textContent=error.message;
+ if(signup&&!data.session)$('#am').textContent='Check your email to confirm your account, then log in.'}
+async function reset(){const email=$('#em').value.trim();if(!email)return $('#am').textContent='Enter your email first.';
+ const {error}=await sb.auth.resetPasswordForEmail(email);$('#am').textContent=error?error.message:'Reset link sent — check your email.'}
+async function load(){$('#app').innerHTML='<main class="mut">Loading your plans…</main>';
+ const names=Object.keys(E),r=await Promise.all([...names.map(n=>sb.from(n).select('*').order('created_at')),sb.from('wedding_settings').select('*').maybeSingle()]);
+ const bad=r.find(x=>x.error);if(bad){toast(bad.error.message+' — did you run schema.sql?')}
+ names.forEach((n,i)=>D[n]=r[i].data||[]);S=r[names.length].data||{};render()}
+const days=d=>d?Math.ceil((new Date(d+'T00:00')-new Date().setHours(0,0,0,0))/864e5):null;
+const money=n=>(+n||0).toLocaleString(undefined,{maximumFractionDigits:0});
+function render(){const tabs=[['dashboard','Overview'],['engagement','Engagement'],...Object.keys(E).map(k=>[k,E[k].t])];
+ $('#app').innerHTML=`<header><h1>Vows & Venues</h1><nav>${tabs.map(([k,l])=>`<button class="${tab==k?'on':''}" onclick="tab='${k}';render()">${l}</button>`).join('')}</nav><span class="mut">${esc(user.email)} · <a onclick="if(confirm('Delete everything saved in this browser?')){ls.del(KEY);location.reload()}">Clear all data</a></span></header><main>${tab=='dashboard'?dash():tab=='engagement'?eng():tbl(tab)}</main>`}
+function cd(label,d){const n=days(d);return `<div class="card"><div class="mut">${label}</div><div class="num big">${n==null?'—':n<0?'Done':n}</div><div class="mut">${n==null?'Set a date in the Engagement tab':n<0?'Celebrated '+d:n==1?'day to go':'days to go · '+d}</div></div>`}
+function dash(){const g=D.guests,yes=g.filter(x=>x.rsvp=='yes'),head=yes.reduce((a,x)=>a+1+(+x.plus_ones||0),0),inv=g.reduce((a,x)=>a+1+(+x.plus_ones||0),0),
+ est=D.budget_items.reduce((a,x)=>a+(+x.estimated||0),0),act=D.budget_items.reduce((a,x)=>a+(+x.actual||0),0),tb=+S.total_budget||0,
+ td=D.tasks.filter(x=>x.done).length,tt=D.tasks.length,pct=(a,b)=>b?Math.min(100,a/b*100):0;
+ return `<h2 style="font-size:32px;margin-bottom:16px">${esc([S.partner1,S.partner2].filter(Boolean).join(' & ')||'Our wedding')}</h2>
+<div class="grid">${cd('Engagement',S.engagement_date)}${cd('Wedding',S.wedding_date)}</div>
+<div class="grid"><div class="card"><div class="mut">Guests confirmed</div><h3 style="font-size:28px">${head} <span class="mut">of ${inv} invited</span></h3><div class="bar"><i style="width:${pct(head,inv)}%"></i></div><div class="mut">${g.filter(x=>x.rsvp=='pending').length} still pending</div></div>
+<div class="card"><div class="mut">Budget</div><h3 style="font-size:28px">${money(act||est)} <span class="mut">of ${money(tb)}</span></h3><div class="bar"><i style="width:${pct(act||est,tb)}%"></i></div><div class="mut">${act?'Actual spend':'Estimated'}${tb&&(act||est)>tb?' — over budget':''}</div></div>
+<div class="card"><div class="mut">Checklist</div><h3 style="font-size:28px">${td} <span class="mut">of ${tt} done</span></h3><div class="bar"><i style="width:${pct(td,tt)}%"></i></div><div class="mut">${D.vendors.filter(v=>v.status=='booked'||v.status=='paid').length} of ${D.vendors.length} vendors booked</div></div></div>`}
+function eng(){const f=(k,l,t='text')=>`<label>${l}<input type="${t}" id="s_${k}" value="${esc(S[k])}"></label>`;
+ return `<div class="card"><h2>Our story and key dates</h2><br><div class="f">${f('partner1','Partner 1')}${f('partner2','Partner 2')}${f('engagement_date','Engagement date','date')}${f('engagement_venue','Engagement venue / party')}${f('wedding_date','Wedding date','date')}${f('wedding_venue','Wedding venue')}${f('total_budget','Total budget','number')}</div>
+<label class="mut" style="display:grid;gap:3px;margin:12px 0">The proposal story<textarea id="s_proposal_story" rows="4">${esc(S.proposal_story)}</textarea></label><button class="b" onclick="saveS()">Save details</button></div>
+<div class="card"><h3>Engagement planning</h3><p class="mut">Tag guests, tasks and budget lines as “engagement” to track the party and announcements separately, then filter each tab.</p><div class="grid">
+${['guests','tasks','budget_items'].map(n=>`<div><b class="num" style="font-size:30px">${D[n].filter(x=>x.event=='engagement'||(n=='guests'&&x.event=='both')).length}</b><div class="mut">${E[n].t.toLowerCase()} for the engagement</div></div>`).join('')}</div></div>`}
+async function saveS(){const p={user_id:user.id};['partner1','partner2','engagement_date','engagement_venue','wedding_date','wedding_venue','total_budget','proposal_story'].forEach(k=>{const v=$('#s_'+k).value;p[k]=v===''?null:v});
+ const {data,error}=await sb.from('wedding_settings').upsert(p,{onConflict:'user_id'}).select().single();
+ if(error)return toast(error.message);S=data;toast('Details saved.')}
+function inp(c,v,h){const [k,,ty,o]=c;
+ if(ty=='sel')return `<select ${h}>${o.map(x=>`<option ${x==v?'selected':''}>${x}</option>`).join('')}</select>`;
+ if(ty=='checkbox')return `<input type="checkbox" ${v?'checked':''} ${h}>`;
+ return `<input type="${ty||'text'}" value="${esc(v)}" ${h} ${ty=='number'?'step="any"':''}>`}
+function tbl(n){const e=E[n],hasEv=e.c.some(c=>c[0]=='event'),rows=D[n].filter(r=>flt=='all'||!hasEv||r.event==flt||r.event=='both');
+ let sum='';if(n=='budget_items'){const a=k=>rows.reduce((s,x)=>s+(+x[k]||0),0);sum=`<p class="mut">Estimated <b>${money(a('estimated'))}</b> · Actual <b>${money(a('actual'))}</b> · Paid ${rows.filter(x=>x.paid).length}/${rows.length} lines</p>`}
+ if(n=='guests')sum=`<p class="mut">${rows.length} parties · ${rows.reduce((s,x)=>s+1+(+x.plus_ones||0),0)} people</p>`;
+ return `<div class="card"><h2>${e.t}</h2>${hasEv?`<p>${['all','engagement','wedding'].map(x=>`<button class="chip ${flt==x?'on':''}" onclick="flt='${x}';render()">${x}</button>`).join('')}</p>`:''}${sum}
+<div class="add">${e.c.map(c=>inp(c,c[0]=='event'&&flt!='all'?flt:'',`id="n_${c[0]}" placeholder="${c[1]}"`)).join('')}<button class="b" onclick="add('${n}')">Add</button></div>
+<div class="wrap"><table><tr>${e.c.map(c=>`<th>${c[1]}</th>`).join('')}<th></th></tr>${rows.map(r=>`<tr>${e.c.map(c=>`<td>${inp(c,r[c[0]],`onchange="upd('${n}','${r.id}','${c[0]}',this)"`)}</td>`).join('')}<td><button class="x" aria-label="Delete" onclick="del('${n}','${r.id}')">×</button></td></tr>`).join('')||`<tr><td colspan="9" class="mut">Nothing here yet — add your first entry above.</td></tr>`}</table></div></div>`}
+const val=(c,el)=>c[2]=='checkbox'?el.checked:c[2]=='number'?(el.value===''?0:+el.value):(el.value===''?null:el.value);
+async function add(n){const row={};E[n].c.forEach(c=>{const el=$('#n_'+c[0]),v=val(c,el);if(v!==null&&!(c[2]=='sel'&&v==='')&&!(c[2]=='number'&&v===0&&el.value===''))row[c[0]]=v});
+ const req=E[n].c[n=='tasks'?1:0][0];if(!row[req])return toast('Fill in '+E[n].c[n=='tasks'?1:0][1].toLowerCase()+' first.');
+ const {data,error}=await sb.from(n).insert(row).select().single();if(error)return toast(error.message);D[n].push(data);render()}
+async function upd(n,id,k,el){const c=E[n].c.find(c=>c[0]==k),v=val(c,el),{error}=await sb.from(n).update({[k]:v}).eq('id',id);
+ if(error)return toast(error.message);D[n].find(r=>r.id==id)[k]=v;if(c[2]=='checkbox'||c[2]=='sel')render()}
+async function del(n,id){if(!confirm('Delete this entry?'))return;const {error}=await sb.from(n).delete().eq('id',id);if(error)return toast(error.message);D[n]=D[n].filter(r=>r.id!=id);render()}
+init();
+</script></body></html>
