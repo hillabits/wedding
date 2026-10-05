@@ -3,6 +3,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Vows & Venues — Wedding Planner</title>
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@500;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <style>
 :root{--bg:#f4f1f6;--card:#fff;--ink:#241b2f;--mut:#7d7287;--ac:#5e2a57;--gold:#a98440;--ln:#e3dce8;--ok:#3f7a5a}
 @media(prefers-color-scheme:dark){:root{--bg:#171220;--card:#211a2d;--ink:#f1eaf5;--mut:#a498b0;--ac:#d79bcb;--gold:#d4b06a;--ln:#352b45;--ok:#7bc79c}}
@@ -33,12 +34,14 @@ td input:hover,td select:hover{border-color:var(--ln)}td input[type=checkbox]{wi
 .f{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}.f label{display:grid;gap:3px;font-size:13px;color:var(--mut)}
 #toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:9px;display:none}
 a{color:var(--ac);cursor:pointer}
+.land{min-height:100vh;display:grid;grid-template-columns:1.1fr 1fr;align-items:center;gap:40px;max-width:1000px;margin:0 auto;padding:24px}.land h1{font-size:clamp(46px,9vw,88px);line-height:1;color:var(--ac)}.land .card{margin:0}.land input{width:100%;margin:6px 0}@media(max-width:720px){.land{grid-template-columns:1fr;min-height:auto;padding-top:48px}}
 </style></head><body>
 <div id="app"></div><div id="toast" role="status"></div>
 <script>
 const $=s=>document.querySelector(s),
 esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])),
 ls={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}},del(k){try{localStorage.removeItem(k)}catch(e){}}};
+const SUPABASE_URL='https://kqciepjhnvedxiliobln.supabase.co',SUPABASE_ANON_KEY='sb_publishable_68UXTVUaBMbNJv3jmW3VVw_I9f-GH7n'; // optional: paste once here to skip the connect screen
 const EV=['both','engagement','wedding'];
 const E={
 guests:{t:'Guests',c:[['name','Name'],['event','Event','sel',EV],['side','Side','sel',['shared','partner 1','partner 2']],['rsvp','RSVP','sel',['pending','yes','no']],['plus_ones','+1','number'],['meal','Meal'],['table_no','Table'],['phone','Phone']]},
@@ -46,31 +49,22 @@ budget_items:{t:'Budget',c:[['item','Item'],['event','Event','sel',['wedding','e
 tasks:{t:'Checklist',c:[['done','Done','checkbox'],['title','Task'],['event','Event','sel',['wedding','engagement']],['due','Due','date']]},
 vendors:{t:'Vendors',c:[['name','Vendor'],['category','Category'],['contact','Contact'],['price','Price','number'],['status','Status','sel',['researching','contacted','booked','paid']]]}};
 let sb,user,S={},D={},tab='dashboard',flt='all',signup=false;
-const cfg=()=>{try{return JSON.parse(ls.get('wp_cfg'))}catch(e){return null}};
+const cfg=()=>{if(SUPABASE_URL&&SUPABASE_ANON_KEY)return{url:SUPABASE_URL,key:SUPABASE_ANON_KEY};try{return JSON.parse(ls.get('wp_cfg'))}catch(e){return null}};
 function toast(m){const t=$('#toast');t.textContent=m;t.style.display='block';clearTimeout(toast.h);toast.h=setTimeout(()=>t.style.display='none',3500)}
-const KEY='wp_demo',DEF={guests:{event:'both',side:'shared',rsvp:'pending',plus_ones:0},budget_items:{paid:false,estimated:0,actual:0},tasks:{done:false},vendors:{price:0}};
-const id=()=>Math.random().toString(36).slice(2),r=(t,x)=>({id:id(),created_at:'',...x});
-let DB;try{DB=JSON.parse(ls.get(KEY))}catch(e){}
-DB=DB||{s:{},guests:[],budget_items:[],tasks:[],vendors:[]};
-const sv=()=>ls.set(KEY,JSON.stringify(DB));
-function Q(t){let op='s',pl,f;const run=()=>{if(t=='wedding_settings'){if(op=='u'){DB.s={...DB.s,...pl};sv()}return{data:DB.s,error:null}}
-const rows=DB[t];if(op=='i'){const x={id:id(),created_at:'',...DEF[t],...pl};rows.push(x);sv();return{data:x,error:null}}
-if(op=='m'){Object.assign(rows.find(x=>x.id==f),pl);sv();return{error:null}}
-if(op=='d'){DB[t]=rows.filter(x=>x.id!=f);sv();return{error:null}}return{data:rows,error:null}};
-const o={select:()=>o,order:()=>o,single:()=>o,maybeSingle:()=>o,eq:(k,v)=>(f=v,o),insert:x=>(op='i',pl=x,o),update:x=>(op='m',pl=x,o),delete:()=>(op='d',o),upsert:x=>(op='u',pl=x,o),then:(a,b)=>Promise.resolve(run()).then(a,b)};return o}
-function init(){sb={from:Q};user={id:'local',email:'Saved in this browser'};load()}
+function init(){const c=cfg();if(!c)return setup();
+ sb=supabase.createClient(c.url,c.key);
+ sb.auth.onAuthStateChange((_e,s)=>{const u=s?.user||null;if(u?.id!==user?.id){user=u;user?load():authView()}});
+ sb.auth.getSession().then(({data})=>{if(!data.session)authView()})}
 function setup(){$('#app').innerHTML=`<div class="card auth"><h2>Connect Supabase</h2><p class="mut">Create a free project at supabase.com, run <b>schema.sql</b> in its SQL Editor, then paste Project URL and anon public key (Settings → API).</p><input id="u" placeholder="https://xxxx.supabase.co"><input id="k" placeholder="anon public key"><button class="b" onclick="saveCfg()">Connect</button></div>`}
 function saveCfg(){const url=$('#u').value.trim(),key=$('#k').value.trim();if(!/^https:\/\/.+/.test(url)||!key)return toast('Enter a valid project URL and key.');ls.set('wp_cfg',JSON.stringify({url,key}));location.reload()}
-function authView(msg=''){$('#app').innerHTML=`<div class="card auth"><h2>${signup?'Create your account':'Welcome back'}</h2><p class="mut">Plan your engagement and wedding in one private place.</p>
-<input id="em" type="email" placeholder="Email" autocomplete="email"><input id="pw" type="password" placeholder="Password (6+ characters)" autocomplete="${signup?'new':'current'}-password">
-<p class="mut" id="am">${esc(msg)}</p><button class="b" onclick="auth()">${signup?'Sign up':'Log in'}</button>
-<p class="mut"><a onclick="signup=!signup;authView()">${signup?'I already have an account':'Create an account'}</a> · <a onclick="reset()">Forgot password</a> · <a onclick="ls.del('wp_cfg');location.reload()">Change project</a></p></div>`}
-async function auth(){const email=$('#em').value.trim(),password=$('#pw').value;
- const {data,error}=signup?await sb.auth.signUp({email,password}):await sb.auth.signInWithPassword({email,password});
- if(error)return $('#am').textContent=error.message;
- if(signup&&!data.session)$('#am').textContent='Check your email to confirm your account, then log in.'}
-async function reset(){const email=$('#em').value.trim();if(!email)return $('#am').textContent='Enter your email first.';
- const {error}=await sb.auth.resetPasswordForEmail(email);$('#am').textContent=error?error.message:'Reset link sent — check your email.'}
+function authView(msg=''){$('#app').innerHTML=`<div class="land"><div><h1>Vows &amp; Venues</h1><p style="font-size:18px;max-width:30ch;margin-top:18px" class="mut">From the engagement party to the last dance, plan it all in one private place.</p></div>
+<form class="card" onsubmit="event.preventDefault();auth()"><h2>Log in</h2><p class="mut">Use the email and password you were given.</p>
+<input id="em" type="email" placeholder="Email" autocomplete="email" required><input id="pw" type="password" placeholder="Password" autocomplete="current-password" required>
+<p class="mut" id="am" role="alert">${esc(msg)}</p><button class="b" type="submit" style="width:100%">Log in</button>
+<p class="mut"><a onclick="ls.del('wp_cfg');location.reload()">Change Supabase project</a></p></form></div>`}
+async function auth(){const {error}=await sb.auth.signInWithPassword({email:$('#em').value.trim(),password:$('#pw').value});
+ if(!error)return;const m=error.message||'';
+ $('#am').textContent=/invalid login/i.test(m)?'Wrong email or password, or this Supabase project is not the one where the user is registered.':/not confirmed/i.test(m)?'This user is not confirmed. In Supabase, open Authentication → Users and confirm it.':m}
 async function load(){$('#app').innerHTML='<main class="mut">Loading your plans…</main>';
  const names=Object.keys(E),r=await Promise.all([...names.map(n=>sb.from(n).select('*').order('created_at')),sb.from('wedding_settings').select('*').maybeSingle()]);
  const bad=r.find(x=>x.error);if(bad){toast(bad.error.message+' — did you run schema.sql?')}
@@ -78,7 +72,7 @@ async function load(){$('#app').innerHTML='<main class="mut">Loading your plans�
 const days=d=>d?Math.ceil((new Date(d+'T00:00')-new Date().setHours(0,0,0,0))/864e5):null;
 const money=n=>(+n||0).toLocaleString(undefined,{maximumFractionDigits:0});
 function render(){const tabs=[['dashboard','Overview'],['engagement','Engagement'],...Object.keys(E).map(k=>[k,E[k].t])];
- $('#app').innerHTML=`<header><h1>Vows & Venues</h1><nav>${tabs.map(([k,l])=>`<button class="${tab==k?'on':''}" onclick="tab='${k}';render()">${l}</button>`).join('')}</nav><span class="mut">${esc(user.email)} · <a onclick="if(confirm('Delete everything saved in this browser?')){ls.del(KEY);location.reload()}">Clear all data</a></span></header><main>${tab=='dashboard'?dash():tab=='engagement'?eng():tbl(tab)}</main>`}
+ $('#app').innerHTML=`<header><h1>Vows & Venues</h1><nav>${tabs.map(([k,l])=>`<button class="${tab==k?'on':''}" onclick="tab='${k}';render()">${l}</button>`).join('')}</nav><span class="mut">${esc(user.email)} · <a onclick="sb.auth.signOut()">Log out</a></span></header><main>${tab=='dashboard'?dash():tab=='engagement'?eng():tbl(tab)}</main>`}
 function cd(label,d){const n=days(d);return `<div class="card"><div class="mut">${label}</div><div class="num big">${n==null?'—':n<0?'Done':n}</div><div class="mut">${n==null?'Set a date in the Engagement tab':n<0?'Celebrated '+d:n==1?'day to go':'days to go · '+d}</div></div>`}
 function dash(){const g=D.guests,yes=g.filter(x=>x.rsvp=='yes'),head=yes.reduce((a,x)=>a+1+(+x.plus_ones||0),0),inv=g.reduce((a,x)=>a+1+(+x.plus_ones||0),0),
  est=D.budget_items.reduce((a,x)=>a+(+x.estimated||0),0),act=D.budget_items.reduce((a,x)=>a+(+x.actual||0),0),tb=+S.total_budget||0,
