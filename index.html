@@ -5,55 +5,70 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <style>
-:root{--pg:#fff;--bg:#f5f5f8;--card:#fff;--ink:#111118;--mut:#8a8a98;--ac:#111118;--gold:#111118;--ln:#e8e8ee;--ok:#2f7d57;--dk:#14141c}
-:root[data-theme=dark]{--pg:#0b0b10;--bg:#1b1b24;--card:#14141b;--ink:#f4f4f7;--mut:#8f8f9d;--ac:#fff;--gold:#fff;--ln:#262630;--ok:#7bc79c;--dk:#000}
+:root{--pg:#fff;--bg:#f5f5f8;--card:#fff;--ink:#111118;--mut:#6b6b7b;--ac:#111118;--gold:#111118;--ln:#e8e8ee;--ok:#2f7d57;--dk:#14141c;color-scheme:light}
+:root[data-theme=dark]{--pg:#0b0b10;--bg:#1b1b24;--card:#14141b;--ink:#f4f4f7;--mut:#9a9aa9;--ac:#fff;--gold:#fff;--ln:#262630;--ok:#7bc79c;--dk:#000;color-scheme:dark}
 *{box-sizing:border-box}
-body{margin:0;font:14.5px/1.5 Inter,system-ui,sans-serif;background:var(--pg);color:var(--ink);min-height:100vh;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
-h1,h2,h3,.num{font-family:Inter,system-ui,sans-serif;font-weight:700;letter-spacing:-.02em;margin:0}
+body{margin:0;font:14px/1.5 Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums;background:var(--pg);color:var(--ink);min-height:100vh;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+h1,h2,h3,.num{font-weight:700;letter-spacing:-.02em;margin:0;line-height:1.2}
 .app{min-height:100vh;display:flex;flex-direction:column}
-.top{display:flex;align-items:center;gap:12px;height:64px;padding:0 20px;border-bottom:1px solid var(--ln);position:sticky;top:0;background:var(--card);z-index:5}
-.brand{display:flex;align-items:center;gap:10px;width:220px;font-weight:700;font-size:14px}.top .sp{flex:1}
-.logo{width:38px;height:38px;border-radius:50%;border:2px solid var(--ink);display:grid;place-items:center;font:700 11px Inter,sans-serif;flex:none}
-.em{color:var(--mut);font-size:13px}
-.tg{width:38px;height:38px;border-radius:10px;border:1px solid var(--ln);background:none;color:var(--ink);cursor:pointer;display:grid;place-items:center;padding:0}
+.top{display:flex;align-items:center;gap:12px;height:60px;padding:0 28px;border-bottom:1px solid var(--ln);position:sticky;top:0;background:var(--card);z-index:5}
+.brand{display:flex;align-items:center;gap:12px;width:212px;font-weight:700;font-size:14px;letter-spacing:-.01em;white-space:nowrap}.top .sp{flex:1}
+.logo{width:34px;height:34px;border-radius:50%;border:2px solid var(--ink);display:grid;place-items:center;font:700 10.5px Inter,sans-serif;letter-spacing:0;flex:none}
+.em{color:var(--mut);font-size:13px;margin-right:4px}
+.tg{width:36px;height:36px;border-radius:8px;border:1px solid var(--ln);background:none;color:var(--ink);cursor:pointer;display:grid;place-items:center;padding:0}.tg:hover{background:var(--bg)}
 .ni svg,.tg svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
 .lay{flex:1;display:flex;min-width:0}
-.side{width:240px;flex:none;padding:20px 14px;border-right:1px solid var(--ln);display:flex;flex-direction:column;gap:4px;position:sticky;top:64px;align-self:flex-start;height:calc(100vh - 64px)}
-.ni{display:flex;align-items:center;gap:12px;width:100%;padding:11px 14px;border:0;background:none;color:var(--mut);border-radius:10px;font:inherit;cursor:pointer;text-align:left}
-.ni:hover{color:var(--ink)}.ni.on{background:var(--bg);color:var(--ink);font-weight:600}
-.body{flex:1;min-width:0;padding:28px clamp(16px,3vw,40px) 16px;display:flex;flex-direction:column}
-.ph{margin-bottom:22px}.ph h1{font-size:28px}.ph p{margin:2px 0 0}
-main{flex:1}footer{padding:28px 0 8px;color:var(--mut);font-size:12.5px}
-.chip{background:none;border:0;padding:7px 13px;border-radius:99px;color:var(--mut);cursor:pointer;font:inherit}.chip.on{background:var(--ac);color:var(--bg)}
-.card{background:var(--card);border:1px solid var(--ln);border-radius:14px;padding:20px;margin-bottom:16px}
-.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}.grid .card{margin:0}
-main>h2{font-size:22px;margin-bottom:14px}
-main>h2+.grid{grid-template-columns:minmax(220px,340px);margin-bottom:14px}
-main>h2+.grid+.grid .card{background:var(--dk);color:#fff;border-color:transparent}
-main>h2+.grid+.grid .mut{color:#a3a3b0}main>h2+.grid+.grid .bar{background:rgba(255,255,255,.18)}main>h2+.grid+.grid .bar i{background:#fff}
-.big{font-size:56px;line-height:1;color:var(--ink)}
+.side{width:240px;flex:none;padding:16px;border-right:1px solid var(--ln);display:flex;flex-direction:column;gap:2px;position:sticky;top:60px;align-self:flex-start;height:calc(100vh - 60px)}
+.ni{display:flex;align-items:center;gap:12px;width:100%;height:40px;padding:0 12px;border:0;background:none;color:var(--mut);border-radius:8px;font:inherit;font-weight:500;cursor:pointer;text-align:left}
+.ni:hover{color:var(--ink);background:var(--bg)}.ni.on{background:var(--bg);color:var(--ink);font-weight:600}
+.body{flex:1;min-width:0;padding:32px clamp(16px,3vw,40px) 24px;display:flex;flex-direction:column}
+.ph,main,footer{width:100%;max-width:1160px;margin-inline:auto}
+.ph{margin-bottom:24px}.ph h1{font-size:26px}.ph p{margin:6px 0 0;font-size:14px}
+main{flex:1}footer{padding:32px 0 0;color:var(--mut);font-size:12.5px}
+.chip{background:none;border:0;padding:6px 12px;border-radius:99px;color:var(--mut);cursor:pointer;font:inherit}.chip.on{background:var(--ac);color:var(--bg)}
+.card{background:var(--card);border:1px solid var(--ln);border-radius:14px;padding:24px;margin-bottom:16px}
+.card h2{font-size:16px;font-weight:650}.card h3{font-size:16px}
+.card>h2{margin-bottom:4px}.card>h2+p{margin-bottom:16px}.card>h2+.add,.card>h2+.f,.card>h2+.crow{margin-top:16px}
+.card>p{margin:0 0 16px}.card>p:last-child{margin-bottom:0}
+.ch{display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px 12px;align-items:center;margin-bottom:16px;min-height:36px}
+.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));margin-bottom:16px}.grid .card{margin:0}
+.hero{position:relative;display:grid;grid-template-columns:1fr auto;align-items:end;gap:24px;padding:32px;margin-bottom:16px;border-radius:16px;background:var(--dk);color:#fff;border:1px solid transparent}
+:root[data-theme=dark] .hero{border-color:var(--ln)}
+.hero h2{font-size:clamp(28px,4vw,40px);letter-spacing:-.03em;line-height:1.1}.hero .hv{margin:8px 0 0;color:#a9a9b6;font-size:14px}
+.hero .hc{text-align:right}.big{font-size:clamp(52px,7vw,72px);line-height:1;letter-spacing:-.04em}.hero .hs{color:#a9a9b6;font-size:13px;margin-top:6px}
+.hero .x{position:absolute;top:14px;right:14px;color:#a9a9b6}.hero .x:hover{background:rgba(255,255,255,.12);color:#fff}
+.kv{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 8px;margin:6px 0 2px}.kv b{font-size:26px;line-height:1.2;letter-spacing:-.02em}.kv span{color:var(--mut);font-size:13px}
+.kpi .bar{margin:12px 0}.kpi>.mut:first-child{font-weight:500}
 .mut{color:var(--mut);font-size:13px}
-input,select,textarea,button.b{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--ln);border-radius:8px;padding:8px 11px;max-width:100%}
-input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid var(--gold);outline-offset:1px}
-button.b{background:var(--ac);color:var(--bg);border:0;cursor:pointer;font-weight:600;padding:9px 18px}
-button.x{background:none;border:0;color:var(--mut);cursor:pointer;font-size:18px}
-.wrap{overflow-x:auto}table{border-collapse:separate;border-spacing:0;width:100%;min-width:640px}
-td,th{padding:6px 6px;text-align:left;border-bottom:1px solid var(--ln);font-size:14px}
-th{background:var(--dk);color:#fff;font-weight:500;font-size:13px;padding:10px 8px;border:0}th:first-child{border-radius:10px 0 0 10px}th:last-child{border-radius:0 10px 10px 0}
-td input,td select{width:100%;min-width:70px;border-color:transparent;background:transparent}
-td input:hover,td select:hover{border-color:var(--ln)}td input[type=checkbox]{width:auto;min-width:0}
-.add{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
-.bar{height:8px;border-radius:9px;background:var(--ln);overflow:hidden;margin-top:8px}.bar i{display:block;height:100%;background:var(--ac);border-radius:9px}
-.auth{max-width:380px;margin:9vh auto}.auth input{width:100%;margin:6px 0}
-.f{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}.f label{display:grid;gap:3px;font-size:13px;color:var(--mut)}
-#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:9px;display:none;z-index:9}
-a{color:var(--ink);cursor:pointer;text-decoration:underline}
-.land{min-height:100vh;display:grid;grid-template-columns:1.1fr 1fr;align-items:center;gap:40px;max-width:1000px;margin:0 auto;padding:24px}.land h1{font-size:clamp(44px,8vw,80px);line-height:1;letter-spacing:-.04em}.land .card{margin:0}.land input{width:100%;margin:6px 0}
-.gt{min-width:900px}.gbar{display:flex;height:10px;border-radius:9px;overflow:hidden;margin:14px 0 4px;background:var(--ln)}.gbar i{display:block;min-width:4px}
-.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}.chips .chip{border:1px solid var(--ln)}.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px}
-.crow{display:flex;gap:8px;align-items:center;margin-bottom:8px}.crow input[type=color]{width:38px;height:34px;padding:2px;cursor:pointer}.crow input:not([type=color]){flex:1;max-width:300px}
-.add select{max-width:180px}
-@media(max-width:760px){.lay{flex-direction:column}.side{width:100%;height:auto;position:static;flex-direction:row;overflow-x:auto;border-right:0;border-bottom:1px solid var(--ln);padding:8px 12px}.ni{width:auto;white-space:nowrap}.brand{width:auto}.em{display:none}.land{grid-template-columns:1fr;min-height:auto;padding-top:48px}}
+input,select,textarea,button.b{font:inherit;font-size:14px;color:var(--ink);background:var(--bg);border:1px solid var(--ln);border-radius:8px;padding:0 12px;height:36px;max-width:100%}
+input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
+input::placeholder{color:var(--mut);opacity:.8}
+input[type=checkbox]{width:18px;height:18px;padding:0;accent-color:var(--ac);cursor:pointer}
+button.b{background:var(--ac);color:var(--pg);border:0;cursor:pointer;font-weight:600;padding:0 18px;white-space:nowrap}button.b:hover{opacity:.88}
+button.b.ghost{background:none;color:var(--ink);border:1px solid var(--ln)}button.b.ghost:hover{background:var(--bg);opacity:1}
+button.x{background:none;border:0;color:var(--mut);cursor:pointer;font-size:20px;line-height:1;width:34px;height:34px;border-radius:8px;display:inline-grid;place-items:center;padding:0}button.x:hover{background:var(--bg);color:var(--ink)}
+.wrap{overflow-x:auto;margin:0 -8px;padding:0 8px}table{border-collapse:separate;border-spacing:0;width:100%;min-width:640px}
+td,th{padding:4px 4px;text-align:left;border-bottom:1px solid var(--ln);font-size:14px}
+th{background:var(--dk);color:#fff;font-weight:600;font-size:12.5px;padding:0 12px;height:38px;border:0;white-space:nowrap}th:first-child{border-radius:8px 0 0 8px}th:last-child{border-radius:0 8px 8px 0}
+td input,td select{width:100%;min-width:70px;border-color:transparent;background:transparent;height:34px}
+td input:hover,td select:hover{border-color:var(--ln)}td input:focus,td select:focus{background:var(--card)}td input[type=checkbox]{width:18px;min-width:0;margin-left:12px}
+td[colspan]{padding:32px 12px;text-align:center;border-bottom:0}td button.x{margin:0 2px}
+.add{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;align-items:center}.add input,.add select{flex:1 1 140px;min-width:0}.add input[type=checkbox]{flex:none}.add .n1{flex:0 0 76px}
+.bar{height:6px;border-radius:9px;background:var(--ln);overflow:hidden;margin-top:12px}.bar i{display:block;height:100%;background:var(--ac);border-radius:9px}
+.auth{max-width:420px;margin:12vh auto}.auth h2{font-size:20px}.auth p{margin:8px 0 16px}.auth input{width:100%;margin:0 0 10px}.auth .b{width:100%;margin-top:6px}
+.f{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}.f label{display:grid;gap:6px;font-size:13px;font-weight:500;color:var(--mut)}.f input{width:100%}
+.acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+#toast{position:fixed;bottom:calc(24px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);background:var(--ink);color:var(--pg);padding:10px 18px;border-radius:10px;font-size:13.5px;box-shadow:0 8px 24px rgba(0,0,0,.18);display:none;z-index:9;max-width:calc(100vw - 32px)}
+a{color:var(--ink);cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.land{min-height:100vh;display:grid;grid-template-columns:1.1fr 1fr;align-items:center;gap:48px;max-width:1000px;margin:0 auto;padding:24px}.land h1{font-size:clamp(44px,8vw,80px);line-height:1;letter-spacing:-.04em}
+.land .card{margin:0;padding:32px}.land h2{font-size:20px}.land .card>p{margin:6px 0 20px}.land input{width:100%;margin:0 0 10px;height:40px}.land .b{width:100%;height:40px}.land #am{margin:0 0 14px;min-height:0}.land #am:empty{display:none}.land .card>p:last-child{margin:16px 0 0;text-align:center}
+.gt{min-width:960px}.gt th:nth-child(1){width:23%}.gt th:nth-child(4){width:72px}.gt th:nth-child(6){width:84px}.gt th:last-child{width:48px}
+.gtool{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:16px}.gtool select{width:auto}.gtool .sp{flex:1}.gtool .gtot{font-size:13px;margin:0 4px}
+.subtabs{display:flex;gap:4px;padding:3px;border:1px solid var(--ln);border-radius:12px;width:max-content;max-width:100%;overflow-x:auto}
+.st{background:none;border:0;height:34px;padding:0 14px;border-radius:9px;color:var(--mut);cursor:pointer;font:inherit;font-weight:600;white-space:nowrap}.st.on{background:var(--ac);color:var(--pg)}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px}
+.crow{display:flex;gap:8px;align-items:center;margin-bottom:8px}.crow input[type=color]{width:38px;height:36px;padding:2px;cursor:pointer}.crow input:not([type=color]){flex:1;max-width:300px}
+@media(max-width:760px){.top{padding:0 16px}.lay{flex-direction:column}.side{width:100%;height:auto;position:static;flex-direction:row;overflow-x:auto;border-right:0;border-bottom:1px solid var(--ln);padding:8px 12px}.ni{width:auto;white-space:nowrap}.brand{width:auto}.em{display:none}.top .b{padding:0 14px}.body{padding:24px 16px 16px}.card{padding:18px}.hero{grid-template-columns:1fr;padding:24px;align-items:start}.hero .hc{text-align:left}.hero h2{padding-right:36px}.land{grid-template-columns:1fr;min-height:auto;padding-top:48px;gap:32px}.gtool .sp{display:none}}
 </style></head><body>
 <div id="app"></div><div id="toast" role="status"></div>
 <script>
@@ -67,7 +82,7 @@ budget_items:{t:'Budget',c:[['item','Item'],['category','Category'],['estimated'
 tasks:{t:'Checklist',c:[['done','Done','checkbox'],['title','Task'],['due','Due','date']]},
 savings:{t:'Savings',c:[['saved_on','Date','date'],['note','Note'],['amount','Amount (Rp)','idr']]},
 vendors:{t:'Vendors',c:[['name','Vendor'],['category','Category'],['contact','Contact'],['price','Price (Rp)','idr'],['status','Status','sel',['researching','contacted','booked','paid']]]}};
-let sb,user,S={},D={},tab='dashboard',editTarget=false;
+let sb,user,S={},D={},tab='dashboard',editTarget=false,editDet=false;
 let th=ls.get('wp_theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');document.documentElement.dataset.theme=th;
 const setTheme=t=>{th=t;ls.set('wp_theme',t);document.documentElement.dataset.theme=t;render()};
 const R=n=>D[n];
@@ -97,35 +112,35 @@ fmt=v=>v===''||v==null?'':dots(v),
 fmtIn=el=>{const d=el.value.replace(/\D/g,'');el.value=d?d.replace(/\B(?=(\d{3})+(?!\d))/g,'.'):''},
 pc=r=>(+r.estimated?Math.round((+r.dp||0)/+r.estimated*100):0)+'%';
 const IC={dashboard:'<path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/>',details:'<path d="M12 21s-8-5.5-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 5.5-8 11-8 11z"/>',guests:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/><path d="M16 4.6a3.5 3.5 0 0 1 0 6.8M18.5 14.4c1.9.8 3 2.7 3 5.6"/>',budget_items:'<rect x="3" y="6" width="18" height="13" rx="3"/><path d="M3 10h18"/><circle cx="16.5" cy="14.5" r="1"/>',tasks:'<rect x="3.5" y="3.5" width="17" height="17" rx="4"/><path d="M8 12.5l3 3 5-6"/>',savings:'<ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6"/><path d="M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/>',vendors:'<path d="M4 9l1.5-5h13L20 9"/><path d="M4 9a2.7 2.7 0 0 0 5.3 0 2.7 2.7 0 0 0 5.4 0A2.7 2.7 0 0 0 20 9"/><path d="M5 12v8h14v-8"/>',moon:'<path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/>',sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',out:'<path d="M9 4H5v16h4"/><path d="M16 8l4 4-4 4M20 12H9"/>'},
-TT={dashboard:['Overview','Everything for the big day at a glance'],details:['Details','Names, date, venue and budget'],guests:['Guests','Both sides, sorted and colour-coded'],budget_items:['Budget','What it costs and what is paid'],tasks:['Checklist','Tick things off one by one'],savings:['Savings','Building the wedding fund'],vendors:['Vendors','Who is booked and who is not']},
+TT={dashboard:['Overview','Everything for the big day at a glance'],guests:['Guests','Both sides, sorted and colour-coded'],budget_items:['Budget','What it costs and what is paid'],tasks:['Checklist','Tick things off one by one'],savings:['Savings','Building the wedding fund'],vendors:['Vendors','Who is booked and who is not']},
 svg=k=>`<svg viewBox="0 0 24 24" aria-hidden="true">${IC[k]}</svg>`;
 function render(){const t=TT[tab];
- $('#app').innerHTML=`<div class="app"><header class="top"><div class="brand"><span class="logo">F&amp;K</span>Fatah &amp; Khairy</div><span class="sp"></span><span class="em">${esc(user.email)}</span><button class="tg" title="Switch theme" aria-label="Switch theme" onclick="setTheme(th=='dark'?'light':'dark')">${svg(th=='dark'?'sun':'moon')}</button><button class="b" onclick="sb.auth.signOut()">Log out</button></header>
+ $('#app').innerHTML=`<div class="app"><header class="top"><div class="brand"><span class="logo">F&amp;K</span>Fatah &amp; Khairy</div><span class="sp"></span><span class="em">${esc(user.email)}</span><button class="tg" title="Switch theme" aria-label="Switch theme" onclick="setTheme(th=='dark'?'light':'dark')">${svg(th=='dark'?'sun':'moon')}</button><button class="b ghost" onclick="sb.auth.signOut()">Log out</button></header>
 <div class="lay"><nav class="side">${Object.keys(TT).map(k=>`<button class="ni ${tab==k?'on':''}" onclick="tab='${k}';render()">${svg(k)}<span>${TT[k][0]}</span></button>`).join('')}</nav>
-<div class="body"><div class="ph"><h1>${t[0]}</h1><p class="mut">${t[1]}</p></div><main>${tab=='dashboard'?dash():tab=='details'?det():tab=='guests'?gst():tab=='savings'?sav()+tbl('savings'):tab=='budget_items'?bud()+tbl(tab):tbl(tab)}</main><footer>&copy; ${new Date().getFullYear()} Fatah &amp; Khairy · Private planner</footer></div></div></div>`}
-function cd(label,d){const n=days(d);return `<div class="card"><div class="mut">${label}</div><div class="num big">${n==null?'—':n<0?'Done':n}</div><div class="mut">${n==null?'Set a date in the Details tab':n<0?'Celebrated '+d:n==1?'day to go':'days to go · '+d}</div></div>`}
+<div class="body"><div class="ph"><h1>${t[0]}</h1><p class="mut">${t[1]}</p></div><main>${tab=='dashboard'?dash():tab=='guests'?gst():tab=='savings'?sav()+tbl('savings'):tab=='budget_items'?bud()+tbl(tab):tbl(tab)}</main><footer>&copy; ${new Date().getFullYear()} Fatah &amp; Khairy · Private planner</footer></div></div></div>`}
+const fdate=d=>new Date(d+'T00:00').toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'}),
+kpi=(l,v,s,p,f)=>`<div class="card kpi"><div class="mut">${l}</div><div class="kv"><b>${v}</b><span>${s}</span></div><div class="bar"><i style="width:${p}%"></i></div><div class="mut" style="margin-top:12px">${f}</div></div>`;
+function hero(pen){const d=S.wedding_date,n=days(d),names=[S.partner1,S.partner2].filter(Boolean).join(' & ')||'Our wedding';
+ return `<section class="hero"><div><h2>${esc(names)}</h2><p class="hv">${esc(S.wedding_venue||'Add a venue in the details')}</p></div><div class="hc"><div class="num big">${n==null?'—':n<0?'Done':n}</div><div class="hs">${n==null?'Set a date with the pencil icon':n<0?'Celebrated '+fdate(d):n==1?'day to go · '+fdate(d):'days to go · '+fdate(d)}</div></div><button class="x" aria-label="Edit details" title="Edit details" onclick="editDet=true;render()">${pen}</button></section>`}
 function dash(){const g=R('guests'),bi=R('budget_items'),tk=R('tasks'),yes=g.filter(x=>x.rsvp=='yes'),head=yes.reduce((a,x)=>a+1+(+x.plus_ones||0),0),inv=g.reduce((a,x)=>a+1+(+x.plus_ones||0),0),
  est=bi.reduce((a,x)=>a+(+x.estimated||0),0),dp=bi.reduce((a,x)=>a+(+x.dp||0),0),tb=+S.total_budget||0,
  td=tk.filter(x=>x.done).length,tt=tk.length,pct=(a,b)=>b?Math.min(100,a/b*100):0,sp=est,sv=D.savings.reduce((a,x)=>a+(+x.amount||0),0),st=+S.savings_target||0;
- return `<h2 style="font-size:32px;margin-bottom:16px">${esc([S.partner1,S.partner2].filter(Boolean).join(' & ')||'Our wedding')}</h2>
-<div class="grid">${cd('Wedding',S.wedding_date)}</div>
-<div class="grid"><div class="card"><div class="mut">Guests confirmed</div><h3 style="font-size:28px">${head} <span class="mut">of ${inv} invited</span></h3><div class="bar"><i style="width:${pct(head,inv)}%"></i></div><div class="mut">${g.filter(x=>x.rsvp=='pending').length} still pending</div></div>
-<div class="card"><div class="mut">Budget</div><h3 style="font-size:28px">${money(sp)} <span class="mut">of ${money(tb)}</span></h3><div class="bar"><i style="width:${pct(sp,tb)}%"></i></div><div class="mut">Estimated · DP paid ${money(dp)} (${est?Math.round(dp/est*100):0}%)${tb&&sp>tb?' — over budget':''}</div></div>
-<div class="card"><div class="mut">Checklist</div><h3 style="font-size:28px">${td} <span class="mut">of ${tt} done</span></h3><div class="bar"><i style="width:${pct(td,tt)}%"></i></div><div class="mut">${D.vendors.filter(v=>v.status=='booked'||v.status=='paid').length} of ${D.vendors.length} vendors booked</div></div>
-<div class="card"><div class="mut">Savings target</div><h3 style="font-size:28px">${st?Math.round(sv/st*100):0}% <span class="mut">${money(sv)} of ${money(st)}</span></h3><div class="bar"><i style="width:${st?Math.min(100,sv/st*100):0}%"></i></div><div class="mut">${st?(sv<st?money(st-sv)+' to go':'Target reached'):'Set a target in the Savings tab'}</div></div></div>`}
+ const pen='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>',
+ empty=!S.partner1&&!S.partner2&&!S.wedding_date&&!S.wedding_venue&&!S.total_budget;
+ if(editDet)return det();
+ return `${hero(pen)}<div class="grid">${kpi('Guests confirmed',head,`of ${inv} invited`,pct(head,inv),`${g.filter(x=>x.rsvp=='pending').length} still pending`)}${kpi('Budget',money(sp),`of ${money(tb)}`,pct(sp,tb),`Estimated · DP paid ${money(dp)} (${est?Math.round(dp/est*100):0}%)${tb&&sp>tb?' — over budget':''}`)}${kpi('Checklist',td,`of ${tt} done`,pct(td,tt),`${D.vendors.filter(v=>v.status=='booked'||v.status=='paid').length} of ${D.vendors.length} vendors booked`)}${kpi('Savings target',(st?Math.round(sv/st*100):0)+'%',`${money(sv)} of ${money(st)}`,st?Math.min(100,sv/st*100):0,st?(sv<st?money(st-sv)+' to go':'Target reached'):'Set a target in the Savings tab')}</div>`}
 function sav(){const sv=D.savings.reduce((a,x)=>a+(+x.amount||0),0),t=+S.savings_target||0,p=t?Math.round(sv/t*100):0,ed=editTarget||!t,
  pen='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>';
- return `<div class="card"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><h2>Our savings target</h2>${ed?'':`<button class="x" aria-label="Edit target" title="Edit target" onclick="editTarget=true;render()">${pen}</button>`}</div>
-${ed?`<br><div class="f"><label>Target (Rp)<input type="text" inputmode="numeric" id="s_savings_target" value="${fmt(S.savings_target)}" oninput="fmtIn(this)" placeholder="e.g. 100.000.000"></label></div><br><button class="b" onclick="saveS()">Save target</button>${t?` <button class="b" style="background:none;color:var(--mut);border:1px solid var(--ln)" onclick="editTarget=false;render()">Cancel</button>`:''}`
-:`<p style="margin:14px 0 0"><span class="num" style="font-size:40px;color:var(--ac)">${p}%</span> <span class="mut">${money(sv)} of ${money(t)}${sv<t?' · '+money(t-sv)+' to go':' · target reached'}</span></p><div class="bar"><i style="width:${Math.min(100,p)}%"></i></div>`}</div>`}
+ return `<div class="card"><div class="ch"><h2>Our savings target</h2>${ed?'':`<button class="x" aria-label="Edit target" title="Edit target" onclick="editTarget=true;render()">${pen}</button>`}</div>
+${ed?`<div class="f"><label>Target (Rp)<input type="text" inputmode="numeric" id="s_savings_target" value="${fmt(S.savings_target)}" oninput="fmtIn(this)" placeholder="e.g. 100.000.000"></label></div><div class="acts"><button class="b" onclick="saveS()">Save target</button>${t?`<button class="b ghost" onclick="editTarget=false;render()">Cancel</button>`:''}</div>`
+:`<div class="kv"><b>${p}%</b><span>${money(sv)} of ${money(t)}${sv<t?' · '+money(t-sv)+' to go':' · target reached'}</span></div><div class="bar"><i style="width:${Math.min(100,p)}%"></i></div>`}</div>`}
 function bud(){const sv=D.savings.reduce((a,x)=>a+(+x.amount||0),0),t=+S.savings_target||0,est=D.budget_items.reduce((a,x)=>a+(+x.estimated||0),0),p=t?Math.round(sv/t*100):0,c=est?Math.round(sv/est*100):0,d=sv-est;
- return `<div class="grid"><div class="card"><div class="mut">Savings target</div><h3 style="font-size:28px">${p}% <span class="mut">${money(sv)} of ${money(t)}</span></h3><div class="bar"><i style="width:${Math.min(100,p)}%"></i></div><div class="mut">${t?(sv<t?money(t-sv)+' to go':'Target reached'):'Set a target in the Savings tab'}</div></div>
-<div class="card"><div class="mut">Savings vs estimated budget</div><h3 style="font-size:28px">${c}% <span class="mut">of ${money(est)} covered</span></h3><div class="bar"><i style="width:${Math.min(100,c)}%"></i></div><div class="mut">${est?(d>=0?'Surplus '+money(d):'Short by '+money(-d)):'Add budget lines below'}</div></div></div>`}
+ return `<div class="grid">${kpi('Savings target',p+'%',`${money(sv)} of ${money(t)}`,Math.min(100,p),t?(sv<t?money(t-sv)+' to go':'Target reached'):'Set a target in the Savings tab')}${kpi('Savings vs estimated budget',c+'%',`of ${money(est)} covered`,Math.min(100,c),est?(d>=0?'Surplus '+money(d):'Short by '+money(-d)):'Add budget lines below')}</div>`}
 function det(){const f=(k,l,t='text')=>`<label>${l}<input type="${t=='idr'?'text':t}" id="s_${k}" value="${t=='idr'?fmt(S[k]):esc(S[k])}" ${t=='idr'?'inputmode="numeric" oninput="fmtIn(this)"':''}></label>`;
- return `<div class="card"><h2>Wedding details</h2><br><div class="f">${f('partner1','Partner 1')}${f('partner2','Partner 2')}${f('wedding_date','Wedding date','date')}${f('wedding_venue','Wedding venue')}${f('total_budget','Total budget (Rp)','idr')}</div><br><button class="b" onclick="saveS()">Save details</button></div>`}
+ return `<div class="card"><h2>Wedding details</h2><div class="f">${f('partner1','Partner 1')}${f('partner2','Partner 2')}${f('wedding_date','Wedding date','date')}${f('wedding_venue','Wedding venue')}${f('total_budget','Total budget (Rp)','idr')}</div><div class="acts"><button class="b" onclick="saveS()">Save details</button><button class="b ghost" onclick="editDet=false;render()">Cancel</button></div></div>`}
 async function saveS(){const p={user_id:user.id};document.querySelectorAll('[id^=s_]').forEach(el=>{let v=el.value;if(el.id=='s_total_budget'||el.id=='s_savings_target')v=v.replace(/\./g,'');p[el.id.slice(2)]=v===''?null:v});
  const {data,error}=await sb.from('wedding_settings').upsert(p,{onConflict:'user_id'}).select().single();
- if(error)return toast(error.message);S=data;editTarget=false;render();toast('Saved.')}
+ if(error)return toast(error.message);S=data;editTarget=false;editDet=false;render();toast('Saved.')}
 function inp(c,v,h){const [k,,ty,o]=c;
  if(ty=='sel')return `<select ${h}>${o.map(x=>`<option ${x==v?'selected':''}>${x}</option>`).join('')}</select>`;
  if(ty=='idr')return `<input type="text" inputmode="numeric" value="${fmt(v)}" ${h} oninput="fmtIn(this)">`;
@@ -147,7 +162,7 @@ async function upd(n,id,k,el){const c=E[n].c.find(c=>c[0]==k),v=val(c,el),{error
 async function del(n,id){if(!confirm('Delete this entry?'))return;const {error}=await sb.from(n).delete().eq('id',id);if(error)return toast(error.message);D[n]=D[n].filter(r=>r.id!=id);render()}
 /* ---------- Guests: two sides + editable colour categories ---------- */
 const DEF_CATS=[{n:'Family',c:'#c0507a'},{n:'Friends',c:'#3b82c4'},{n:'Neighbours',c:'#3f9a6a'},{n:'Work',c:'#d08a2e'},{n:'Other',c:'#8a7f95'}];
-let gFilter='',gSort='name',gManage=false;
+let gFilter='',gSort='name',gManage=false,gSide='partner 1';
 const cats=()=>Array.isArray(S.guest_categories)&&S.guest_categories.length?S.guest_categories:DEF_CATS,
 catC=n=>(cats().find(x=>x.n==n)||{}).c||'',
 hc=g=>1+(+g.plus_ones||0),
@@ -168,17 +183,19 @@ function gst(){
 <td><select ${h('side')} aria-label="Side">${['partner 1','partner 2','shared'].map(k=>`<option value="${k}" ${k==(r.side||'shared')?'selected':''}>${esc(sideN(k))}</option>`).join('')}</select></td>
 <td><button class="x" aria-label="Delete" onclick="del('guests','${r.id}')">×</button></td></tr>`},
  sec=([k,rows])=>{const ix=['partner 1','partner 2'].indexOf(k),vis=rows.filter(g=>!gFilter||g.category==gFilter).sort(cmp),yes=sum(rows.filter(g=>g.rsvp=='yes'));
-  return `<div class="card"><div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;align-items:baseline"><h2>${k=='shared'?'Not assigned yet':esc(sideN(k))+"'s guests"}</h2><span class="mut">${rows.length} parties · ${sum(rows)} people · ${yes} confirmed</span></div>
-${k=='shared'?`<p class="mut">Use the last dropdown on each row to move these guests to ${esc(sideN('partner 1'))} or ${esc(sideN('partner 2'))}.</p>`:`<div class="add" style="margin-top:12px"><input id="gn${ix}" placeholder="Guest name" onkeydown="if(event.key=='Enter')addG(${ix})"><select id="gc${ix}">${catOpts('')}</select><input id="gp${ix}" type="number" min="0" placeholder="+1" style="width:70px"><button class="b" onclick="addG(${ix})">Add</button></div>`}
+  return `<div class="card"><div class="ch"><h2>${k=='shared'?'Not assigned yet':esc(sideN(k))+"'s guests"}</h2><span class="mut">${rows.length} parties · ${sum(rows)} people · ${yes} confirmed</span></div>
+${k=='shared'?`<p class="mut">Use the last dropdown on each row to move these guests to ${esc(sideN('partner 1'))} or ${esc(sideN('partner 2'))}.</p>`:`<div class="add"><input id="gn${ix}" placeholder="Guest name" onkeydown="if(event.key=='Enter')addG(${ix})"><select id="gc${ix}">${catOpts('')}</select><input id="gp${ix}" type="number" min="0" placeholder="+1" class="n1"><button class="b" onclick="addG(${ix})">Add</button></div>`}
 <div class="wrap"><table class="gt"><tr><th>Name</th><th>Category</th><th>RSVP</th><th>+1</th><th>Meal</th><th>Table</th><th>Phone</th><th>Side</th><th></th></tr>${vis.map(row).join('')||`<tr><td colspan="9" class="mut">${rows.length?'No guests in this category.':'No guests yet — add the first one above.'}</td></tr>`}</table></div></div>`},
  secs=['partner 1','partner 2','shared'].map(k=>[k,G.filter(g=>(g.side||'shared')==k)]).filter(([k,r])=>k!='shared'||r.length),
- man=gManage?`<div class="card"><h3 style="margin-bottom:10px">Edit categories</h3>${cs.map((c,i)=>`<div class="crow"><input type="color" value="${c.c}" onchange="catEd(${i},'c',this)" aria-label="Colour"><input value="${esc(c.n)}" onchange="catEd(${i},'n',this)" aria-label="Category name"><button class="x" onclick="catDel(${i})" aria-label="Delete category">×</button></div>`).join('')}
+ cur=secs.find(x=>x[0]==gSide)||secs[0],
+ man=gManage?`<div class="card"><h2>Edit categories</h2><div style="height:12px"></div>${cs.map((c,i)=>`<div class="crow"><input type="color" value="${c.c}" onchange="catEd(${i},'c',this)" aria-label="Colour"><input value="${esc(c.n)}" onchange="catEd(${i},'n',this)" aria-label="Category name"><button class="x" onclick="catDel(${i})" aria-label="Delete category">×</button></div>`).join('')}
 <div class="crow"><input type="color" id="nc_c" value="#9b6bd1" aria-label="Colour"><input id="nc_n" placeholder="New category, e.g. Classmates" onkeydown="if(event.key=='Enter')catAdd()"><button class="b" onclick="catAdd()">Add</button></div></div>`:'';
- return `<div class="card"><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px"><h2>Guests</h2><span class="mut">${G.length} parties · ${tot} people</span></div>
-${tot?`<div class="gbar" aria-hidden="true">${seg.map(([n,c,v])=>`<i title="${esc(n)}: ${v}" style="flex:${v};background:${c}"></i>`).join('')}</div>`:''}
-<div class="chips">${chip(-1,'All','',G.length)}${cs.map((c,i)=>chip(i,c.n,c.c,G.filter(g=>g.category==c.n).length)).join('')}</div>
-<div class="add" style="margin:12px 0 0;align-items:center"><label class="mut">Sort by <select onchange="gSort=this.value;render()"><option value="name" ${gSort=='name'?'selected':''}>Name</option><option value="category" ${gSort=='category'?'selected':''}>Category</option><option value="rsvp" ${gSort=='rsvp'?'selected':''}>RSVP</option></select></label>
-<button class="b" style="background:none;color:var(--ac);border:1px solid var(--ln)" onclick="gManage=!gManage;render()">${gManage?'Done editing':'Edit categories'}</button></div></div>${man}${secs.map(sec).join('')}`}
+ return `<div class="gtool"><div class="subtabs" role="tablist">${secs.map(([k,r])=>`<button role="tab" aria-selected="${k==cur[0]}" class="st ${k==cur[0]?'on':''}" onclick="gSide='${k}';render()">${k=='shared'?'Not assigned':esc(sideN(k))+"'s guests"} <span style="opacity:.7">${r.length}</span></button>`).join('')}</div>
+<span class="sp"></span><span class="mut gtot">${G.length} parties · ${tot} people</span>
+<select aria-label="Filter by category" onchange="gFilter=this.value;render()"><option value="">All categories</option>${cs.map(c=>`<option value="${esc(c.n)}" ${c.n==gFilter?'selected':''}>${esc(c.n)}</option>`).join('')}</select>
+<select aria-label="Sort by" onchange="gSort=this.value;render()"><option value="name" ${gSort=='name'?'selected':''}>Sort: Name</option><option value="category" ${gSort=='category'?'selected':''}>Sort: Category</option><option value="rsvp" ${gSort=='rsvp'?'selected':''}>Sort: RSVP</option></select>
+<button class="x" aria-label="Edit categories" title="Edit categories" onclick="gManage=!gManage;render()" style="${gManage?'color:var(--ac)':''}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.6 13.4l-7.2 7.2a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1.2"/></svg></button></div>
+${man}${sec(cur)}`}
 async function catSave(a){const {data,error}=await sb.from('wedding_settings').upsert({user_id:user.id,guest_categories:a},{onConflict:'user_id'}).select().single();
  if(error){toast(/guest_categories/.test(error.message)?'Run the SQL update first (adds guest_categories), then try again.':error.message);return false}S=data;return true}
 async function catAdd(){const n=$('#nc_n').value.trim(),c=$('#nc_c').value;if(!n)return toast('Give the category a name.');
