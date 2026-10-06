@@ -571,6 +571,7 @@ if('serviceWorker' in navigator&&/^https?:/.test(location.protocol))addEventList
 .sn-ic svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .sn-t h2{font-family:var(--serif,'Playfair Display',serif);font-size:26px;font-weight:700;margin:0;letter-spacing:-.02em;line-height:1.2;color:var(--ink)}
 .sn-ct{color:var(--mut);font-size:13.5px;white-space:nowrap}
+.sn-st{margin-left:auto;color:var(--mut);font-size:12.5px;white-space:nowrap}.sn-st.err{color:#d2543f;white-space:normal;text-align:right}
 /* floating control bar, bottom centre */
 .sn-dock{position:fixed;right:var(--fr);bottom:var(--fb);z-index:3;display:flex;align-items:center;gap:8px;padding:9px;box-sizing:border-box;max-width:calc(100vw - 2 * var(--fr));border-radius:99px;background:color-mix(in srgb,var(--card) 84%,transparent);border:1px solid var(--ln);box-shadow:0 18px 44px rgba(0,0,0,.16);-webkit-backdrop-filter:blur(22px) saturate(1.4);backdrop-filter:blur(22px) saturate(1.4)}
 .sn-s{box-sizing:border-box;display:flex;align-items:center;gap:8px;height:38px;padding:0 14px;border:1px solid var(--ln);background:var(--bg);border-radius:99px;color:var(--mut);transition:border-color .2s,box-shadow .25s}
@@ -650,18 +651,16 @@ html .sn-fab.in-top.open>svg:not(.sn-fi-note),html .sn-fab.in-top.open:hover>svg
 </style>
 <script>
 (()=>{
-const KEY='wp_sticky_notes_v1',COL={y:'#f7e07a',r:'#f4a698',g:'#b9d8a8',b:'#a8cfe6',p:'#cfbbe8',s:'#ead9bd'},NAMES={y:'Yellow',r:'Coral',g:'Sage',b:'Sky',p:'Lilac',s:'Sand'},KEYS=Object.keys(COL),EASE='cubic-bezier(.22,.9,.24,1)';
-const ld=()=>{try{const a=JSON.parse(localStorage.getItem(KEY));return Array.isArray(a)?a:[]}catch(e){return[]}};
-let notes=ld(),filter='',q='',isOpen=false,closing=false,undo=null,undoT=null,prevOv='';
-const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(notes))}catch(e){}};
-const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const TBL='sticky_notes',LEGACY='wp_sticky_notes_v1',COL={y:'#f7e07a',r:'#f4a698',g:'#b9d8a8',b:'#a8cfe6',p:'#cfbbe8',s:'#ead9bd'},NAMES={y:'Yellow',r:'Coral',g:'Sage',b:'Sky',p:'Lilac',s:'Sand'},KEYS=Object.keys(COL),EASE='cubic-bezier(.22,.9,.24,1)';
+let notes=[],filter='',q='',isOpen=false,closing=false,undo=null,undoT=null,prevOv='';
+const uid=()=>crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2,10);
 const dtx=t=>{const d=new Date(t),n=new Date();return d.toDateString()==n.toDateString()?'Today '+d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}):d.toLocaleDateString('en-GB',{day:'numeric',month:'short'})};
 const I={plus:'<svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>',note:'<svg viewBox="0 0 24 24"><path d="M5 4h14a1 1 0 0 1 1 1v9l-6 6H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1z"/><path d="M14 20v-5a1 1 0 0 1 1-1h5"/></svg>',search:'<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg>',pin:'<svg viewBox="0 0 24 24"><path d="M9 4h6l-1 6 3 3H7l3-3-1-6zM12 13v7"/></svg>',trash:'<svg viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-12M9 7V4h6v3"/></svg>'};
 const root=document.createElement('div');root.id='sn-root';
 root.innerHTML=`<button class="sn-fab" aria-label="Open sticky notes" title="Sticky notes">${I.plus}${I.note.replace('<svg ','<svg class="sn-fi-note" ')}</button>
 <div class="sn-ov" hidden><div class="sn-bd"></div>
 <section class="sn-panel" role="dialog" aria-modal="true" aria-label="Sticky notes" tabindex="-1">
-<header class="sn-h"><div class="sn-t"><span class="sn-ic">${I.note}</span><h2>Sticky notes</h2><span class="sn-ct"></span></div></header>
+<header class="sn-h"><div class="sn-t"><span class="sn-ic">${I.note}</span><h2>Sticky notes</h2><span class="sn-ct"></span><span class="sn-st" role="status" aria-live="polite"></span></div></header>
 <div class="sn-g"></div>
 <div class="sn-dock"><label class="sn-s">${I.search}<input type="search" placeholder="Search notes" aria-label="Search notes" autocomplete="off"></label><div class="sn-f"></div><button class="sn-new">+ New note</button><span class="sn-x" aria-hidden="true"></span></div>
 <div class="sn-undo" hidden><span>Note deleted</span><button>Undo</button></div></section></div>`;
@@ -678,30 +677,30 @@ const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const A=(el,kf,o={})=>el.animate(kf,{duration:520,easing:EASE,fill:'backwards',...o});
 function draw(mode,fr){const before={};if(mode!='open')g.querySelectorAll('.sn-n').forEach(el=>before[el.dataset.id]=el.getBoundingClientRect());
  const list=vis();g.innerHTML='';
- if(!list.length){g.innerHTML=notes.length?`<div class="sn-e"><h3>Nothing found</h3><p>No notes match your search or colour filter.</p></div>`:`<div class="sn-e"><div class="big">${I.note}</div><h3>No notes yet</h3><p>Jot down anything: ideas, phone numbers, reminders. Tap “New note” to start.</p></div>`}
+ if(!list.length){g.innerHTML=(!loaded&&!notes.length)?`<div class="sn-e"><h3>Loading notes…</h3></div>`:notes.length?`<div class="sn-e"><h3>Nothing found</h3><p>No notes match your search or colour filter.</p></div>`:`<div class="sn-e"><div class="big">${I.note}</div><h3>No notes yet</h3><p>Jot down anything: ideas, phone numbers, reminders. Tap “New note” to start.</p></div>`}
  list.forEach(n=>g.appendChild(mk(n)));g.querySelectorAll('.sn-nb').forEach(fit);drawF();
  if(mode=='open'){const e=g.querySelector('.sn-e');if(e)A(e,[{opacity:0,transform:'translateY(56px) scale(.985)'},{opacity:1,transform:'none'}],{delay:230,duration:620})}
  [...g.querySelectorAll('.sn-n')].forEach((el,i)=>{const id=el.dataset.id,o=before[id];
   if(mode=='open'){A(el,[{opacity:0,transform:'translateY(56px) scale(.985)'},{opacity:1,transform:'none'}],{delay:230+Math.min(i,12)*70,duration:620})}
   else if(o){const r=el.getBoundingClientRect(),dx=o.left-r.left,dy=o.top-r.top;if(Math.abs(dx)>1||Math.abs(dy)>1)A(el,[{transform:`translate(${dx}px,${dy}px)`},{transform:'none'}],{duration:480})}
   else A(el,[{opacity:0,transform:'scale(.7) rotate(-4deg)'},{opacity:1,transform:'none'}],{duration:520})})}
-function add(){q='';srch.value='';const n={id:uid(),t:'',b:'',c:filter||'y',p:false,u:Date.now()},i=notes.findIndex(x=>!x.p);notes.splice(i<0?notes.length:i,0,n);save();draw('add');
+function add(){q='';srch.value='';const n={id:uid(),t:'',b:'',c:filter||'y',p:false,u:Date.now(),o:Date.now()};notes.push(n);sortN();push(n);draw('add');
  const el=g.querySelector(`[data-id="${n.id}"] .sn-nt`);if(el){el.focus();g.scrollTo({top:0,behavior:'smooth'})}}
 function showUndo(){ub.hidden=false;A(ub,[{opacity:0,transform:'translateY(14px)'},{opacity:1,transform:'none'}],{duration:350});clearTimeout(undoT);undoT=setTimeout(()=>{ub.hidden=true;undo=null},5500)}
-async function del(id){const el=g.querySelector(`[data-id="${id}"]`),i=notes.findIndex(n=>n.id==id);if(i<0)return;const [n]=notes.splice(i,1);undo={n,i};save();
+async function del(id){const el=g.querySelector(`[data-id="${id}"]`),i=notes.findIndex(n=>n.id==id);if(i<0)return;const [n]=notes.splice(i,1);undo={n};drop(id);
  if(el){try{await el.animate([{opacity:1,transform:'none'},{opacity:0,transform:'scale(.82) rotate(3deg)'}],{duration:240,easing:'ease-in',fill:'forwards'}).finished}catch(e){}}
  draw('del');showUndo()}
 g.addEventListener('input',e=>{const el=e.target.closest('.sn-n');if(!el)return;const n=notes.find(x=>x.id==el.dataset.id);if(!n)return;
  if(e.target.classList.contains('sn-nt'))n.t=e.target.value;else if(e.target.classList.contains('sn-nb')){n.b=e.target.value;fit(e.target)}else return;
- n.u=Date.now();el.querySelector('.sn-dt').textContent=dtx(n.u);save()});
+ n.u=Date.now();el.querySelector('.sn-dt').textContent=dtx(n.u);push(n)});
 g.addEventListener('keydown',e=>{if(e.key=='Enter'&&e.target.classList.contains('sn-nt')){e.preventDefault();e.target.closest('.sn-n').querySelector('.sn-nb').focus()}});
 g.addEventListener('click',e=>{const el=e.target.closest('.sn-n');if(!el)return;const id=el.dataset.id,n=notes.find(x=>x.id==id);if(!n)return;
- if(e.target.closest('.sn-pin')){n.p=!n.p;notes.splice(notes.indexOf(n),1);const i=n.p?0:notes.findIndex(x=>!x.p);notes.splice(n.p?0:(i<0?notes.length:i),0,n);save();draw('pin')}
- else if(e.target.closest('.sn-dot')){n.c=e.target.closest('.sn-dot').dataset.c;n.u=Date.now();save();el.style.setProperty('--nc',COL[n.c]);el.querySelectorAll('.sn-dot').forEach(d=>d.classList.toggle('on',d.dataset.c==n.c));drawF();if(filter&&filter!=n.c)draw('filter')}
+ if(e.target.closest('.sn-pin')){n.p=!n.p;n.o=Date.now();n.u=n.o;sortN();push(n);draw('pin')}
+ else if(e.target.closest('.sn-dot')){n.c=e.target.closest('.sn-dot').dataset.c;n.u=Date.now();push(n);el.style.setProperty('--nc',COL[n.c]);el.querySelectorAll('.sn-dot').forEach(d=>d.classList.toggle('on',d.dataset.c==n.c));drawF();if(filter&&filter!=n.c)draw('filter')}
  else if(e.target.closest('.sn-del'))del(id)});
 pills.addEventListener('click',e=>{const b=e.target.closest('.sn-p');if(!b)return;filter=b.dataset.f;draw('filter')});
 srch.addEventListener('input',()=>{q=srch.value;draw('filter')});
-ub.querySelector('button').addEventListener('click',()=>{if(!undo)return;notes.splice(Math.min(undo.i,notes.length),0,undo.n);undo=null;save();ub.hidden=true;draw('undo')});
+ub.querySelector('button').addEventListener('click',()=>{if(!undo)return;undo.n.u=Date.now();notes.push(undo.n);sortN();push(undo.n);undo=null;ub.hidden=true;draw('undo')});
 $('.sn-new').addEventListener('click',add);
 const setTop=()=>{const tb=document.querySelector('.top'),bd=document.querySelector('.body'),r=bd?bd.getBoundingClientRect():null,st=root.style;st.setProperty('--sn-top',(tb?Math.round(tb.getBoundingClientRect().bottom):60)+'px');st.setProperty('--sn-left',(r?Math.max(0,Math.round(r.left)):0)+'px');st.setProperty('--sn-right',(r?Math.max(0,Math.round(innerWidth-r.right)):0)+'px')};
 const ghost=document.createElement('div');ghost.className='sn-ghost';ghost.hidden=true;root.appendChild(ghost);
@@ -743,10 +742,79 @@ fab.addEventListener('click',()=>isOpen?closeP():openP());bd.addEventListener('c
 panel.addEventListener('click',e=>{if([panel,g,$('.sn-h')].includes(e.target))closeP()});
 addEventListener('keydown',e=>{if(e.key=='Escape'&&isOpen)closeP()});
 addEventListener('resize',()=>{if(isOpen)setTop();if(isOpen)g.querySelectorAll('.sn-nb').forEach(fit)});
+/* ---- Cloud sync: notes live in Supabase (table sticky_notes), shared across every device signed in to the same account ---- */
+const st=$('.sn-st');
+let loaded=false,cloudUid=null,chan=null,ft=null,rt=null,busy=false,needDraw=false;
+const dirty=new Set(),gone=new Set();
+const sortN=()=>notes.sort((a,b)=>(+b.p-+a.p)||(b.o-a.o));
+const toRow=n=>({id:n.id,user_id:cloudUid,title:n.t||'',body:n.b||'',color:n.c,pinned:!!n.p,sort_ms:n.o,updated_ms:n.u});
+const fromRow=r=>({id:r.id,t:r.title||'',b:r.body||'',c:COL[r.color]?r.color:'y',p:!!r.pinned,o:+r.sort_ms||0,u:+r.updated_ms||0});
+const hint=m=>/sticky_notes|schema cache|does not exist|relation/i.test(m||'')?'Run sticky_notes.sql in Supabase first':(m||'Not saved');
+function setSt(s,m){st.className='sn-st'+(s=='err'?' err':'');st.textContent=s=='saving'?'Saving…':s=='saved'?'Synced':s=='err'?(m||'Not saved'):''}
+const sched=ms=>{clearTimeout(ft);ft=setTimeout(flush,ms==null?700:ms)};
+const push=n=>{dirty.add(n.id);gone.delete(n.id);setSt('saving');sched()};
+const drop=id=>{dirty.delete(id);gone.add(id);setSt('saving');sched()};
+async function flush(){
+ if(busy){sched(300);return}
+ if(!cloudUid||!(dirty.size||gone.size))return;
+ busy=true;setSt('saving');
+ const ids=[...dirty],dl=[...gone];dirty.clear();gone.clear();
+ const up=ids.map(id=>notes.find(n=>n.id==id)).filter(Boolean).map(toRow);
+ try{
+  if(up.length){const {error}=await sb.from(TBL).upsert(up,{onConflict:'id'});if(error)throw error}
+  if(dl.length){const {error}=await sb.from(TBL).delete().in('id',dl);if(error)throw error}
+  busy=false;setSt(dirty.size||gone.size?'saving':'saved');if(dirty.size||gone.size)sched(300);
+ }catch(e){
+  ids.forEach(id=>dirty.add(id));dl.forEach(id=>gone.add(id));busy=false;
+  setSt('err',navigator.onLine===false?'Offline, will retry':hint(e&&e.message));clearTimeout(rt);rt=setTimeout(flush,6000)}}
+function merge(rows){
+ const cloud=new Map(rows.map(r=>{const c=fromRow(r);return[c.id,c]})),out=[];
+ cloud.forEach(c=>{if(gone.has(c.id))return;const l=notes.find(x=>x.id==c.id);out.push(l&&(dirty.has(l.id)||l.u>=c.u)?l:c)});
+ notes.forEach(l=>{if(!cloud.has(l.id)&&dirty.has(l.id))out.push(l)});
+ notes=out;sortN()}
+async function legacy(rows){
+ let a=[];try{a=JSON.parse(localStorage.getItem(LEGACY))||[]}catch(e){}
+ if(!Array.isArray(a)||!a.length)return;
+ const have=new Set(rows.map(r=>r.id)),now=Date.now();
+ const add=a.filter(x=>x&&x.id&&!have.has(String(x.id))).map((x,i)=>toRow({id:String(x.id),t:x.t,b:x.b,c:COL[x.c]?x.c:'y',p:!!x.p,u:+x.u||now,o:now-i}));
+ if(add.length){const {error}=await sb.from(TBL).upsert(add,{onConflict:'id'});if(error)return;rows.push(...add)}
+ try{localStorage.removeItem(LEGACY)}catch(e){}}
+function safeDraw(){
+ if(!isOpen)return;
+ const f=document.activeElement;
+ if(f&&g.contains(f)&&/INPUT|TEXTAREA/.test(f.tagName)){needDraw=true;drawF();return}
+ draw('sync')}
+g.addEventListener('focusout',()=>{if(!needDraw)return;setTimeout(()=>{if(needDraw&&!g.contains(document.activeElement)){needDraw=false;draw('sync')}},120)});
+async function pull(){
+ if(!cloudUid)return;const uidNow=cloudUid;
+ const {data,error}=await sb.from(TBL).select('*');
+ if(uidNow!==cloudUid)return;
+ if(error){setSt('err',hint(error.message));loaded=true;safeDraw();return}
+ const rows=data||[];
+ if(!loaded)await legacy(rows);
+ if(uidNow!==cloudUid)return;
+ merge(rows);loaded=true;if(!(dirty.size||gone.size))setSt('saved');safeDraw()}
+function onRT(p){
+ if(p.eventType=='DELETE'){const id=p.old&&p.old.id;if(!id||dirty.has(id))return;const i=notes.findIndex(n=>n.id==id);if(i<0)return;notes.splice(i,1);safeDraw();return}
+ const c=fromRow(p.new);if(gone.has(c.id))return;
+ const l=notes.find(n=>n.id==c.id);
+ if(l){if(dirty.has(l.id)||l.u>=c.u)return;Object.assign(l,c)}else notes.push(c);
+ sortN();safeDraw()}
+function unlisten(){if(chan){try{sb.removeChannel(chan)}catch(e){}chan=null}}
+function startCloud(){setSt('');
+ chan=sb.channel('sticky-'+cloudUid).on('postgres_changes',{event:'*',schema:'public',table:TBL},onRT).subscribe(s=>{if(s=='SUBSCRIBED'&&loaded)pull()});
+ pull()}
+function stopCloud(){unlisten();cloudUid=null;loaded=false;notes=[];dirty.clear();gone.clear();clearTimeout(ft);clearTimeout(rt);busy=false;needDraw=false;q='';filter='';setSt('')}
+function cloudCheck(on){
+ const u=on&&typeof sb!=='undefined'&&sb&&typeof user!=='undefined'&&user?user.id:null;
+ if(u===cloudUid)return;
+ stopCloud();if(u){cloudUid=u;startCloud()}}
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState=='visible'){if(cloudUid)pull()}else flush()});
+addEventListener('online',()=>{flush();pull()});
 const mq=matchMedia('(max-width:760px)'),place=()=>{const top=document.querySelector('#app .top');
  if(mq.matches&&top){if(fab.parentNode!==top){top.insertBefore(fab,top.querySelector('.tg'))}fab.classList.add('in-top')}
  else{if(fab.parentNode!==root)root.insertBefore(fab,root.firstChild);fab.classList.remove('in-top')}};
-const app=document.getElementById('app'),sync=()=>{place();const on=!!document.querySelector('#app .app');root.style.display=on?'':'none';if(!on&&isOpen){ov.hidden=true;ghost.hidden=true;document.body.style.overflow=prevOv;fab.classList.remove('open');isOpen=false;closing=false}};
+const app=document.getElementById('app'),sync=()=>{place();const on=!!document.querySelector('#app .app');root.style.display=on?'':'none';cloudCheck(on);if(!on&&isOpen){ov.hidden=true;ghost.hidden=true;document.body.style.overflow=prevOv;fab.classList.remove('open');isOpen=false;closing=false}};
 if(app)new MutationObserver(sync).observe(app,{childList:true});(mq.addEventListener?mq.addEventListener('change',sync):mq.addListener(sync));sync();
 })();
 </script>
