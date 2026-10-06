@@ -3,7 +3,14 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Wedding Dream</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%2314141c'/%3E%3Cg fill='none' stroke='white' stroke-width='4'%3E%3Ccircle cx='25' cy='32' r='14'/%3E%3Ccircle cx='39' cy='32' r='14'/%3E%3C/g%3E%3C/svg%3E">
-<meta name="theme-color" content="#14141c">
+<meta name="theme-color" content="#efebe4">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Wedding">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<script>try{var t=localStorage.getItem("wp_theme")||(matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light");document.documentElement.dataset.theme=t;document.querySelector("meta[name=theme-color]").content=t=="dark"?"#121317":"#efebe4"}catch(e){}</script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <style>
@@ -27,7 +34,6 @@ h1,h2,h3,.num{font-weight:700;letter-spacing:-.02em;margin:0;line-height:1.2}
 .ph,main,footer{width:100%;max-width:1160px;margin-inline:auto}
 .ph{margin-bottom:24px}.ph h1{font-size:26px}.ph p{margin:6px 0 0;font-size:14px}
 main{flex:1}footer{padding:32px 0 0;color:var(--mut);font-size:12.5px}
-.chip{background:none;border:0;padding:6px 12px;border-radius:99px;color:var(--mut);cursor:pointer;font:inherit}.chip.on{background:var(--ac);color:var(--bg)}
 .card{background:var(--card);border:1px solid var(--ln);border-radius:14px;padding:24px;margin-bottom:16px}
 .card h2{font-size:16px;font-weight:650}.card h3{font-size:16px}
 .card>h2{margin-bottom:4px}.card>h2+p{margin-bottom:16px}.card>h2+.add,.card>h2+.f,.card>h2+.crow{margin-top:16px}
@@ -68,7 +74,6 @@ a{color:var(--ink);cursor:pointer;text-decoration:underline;text-underline-offse
 .gtool{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:16px}.gtool select{width:auto}.gtool .sp{flex:1}.gtool .gtot{font-size:13px;margin:0 4px}
 .subtabs{display:flex;gap:4px;padding:3px;border:1px solid var(--ln);border-radius:12px;width:max-content;max-width:100%;overflow-x:auto}
 .st{background:none;border:0;height:34px;padding:0 14px;border-radius:9px;color:var(--mut);cursor:pointer;font:inherit;font-weight:600;white-space:nowrap}.st.on{background:var(--ac);color:var(--pg)}
-.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px}
 .crow{display:flex;gap:8px;align-items:center;margin-bottom:8px}.crow input[type=color]{width:38px;height:36px;padding:2px;cursor:pointer}.crow input:not([type=color]){flex:1;max-width:300px}
 @media(max-width:760px){.top{padding:0 16px}.lay{flex-direction:column}.side{width:100%;height:auto;position:static;flex-direction:row;overflow-x:auto;border-right:0;border-bottom:1px solid var(--ln);padding:8px 12px}.ni{width:auto;white-space:nowrap}.brand{width:auto}.em{display:none}.top .b{padding:0 14px}.body{padding:24px 16px 16px}.card{padding:18px}.hero{grid-template-columns:1fr;padding:24px;align-items:start}.hero .hc{text-align:left}.hero h2{padding-right:36px}.land{grid-template-columns:1fr;min-height:auto;padding-top:48px;gap:32px}.gtool .sp{display:none}}
 
@@ -112,9 +117,7 @@ h1,h2,h3,.num,.big,.kv b,.brand{font-family:var(--serif);font-weight:600;letter-
 .auth h2,.land h2{font-size:26px}
 
 /* ---------- Mobile: burger menu + slide-in drawer ---------- */
-.bg,.scrim,.dhead,.dfoot{display:none}
 @media(max-width:760px){
-.bg{display:grid}
 .top{gap:10px;padding:0 14px}
 .top>button.b{display:none}
 .brand{font-size:20px;gap:10px}
@@ -122,13 +125,10 @@ h1,h2,h3,.num,.big,.kv b,.brand{font-family:var(--serif);font-weight:600;letter-
 .side{position:fixed;top:0;left:0;bottom:0;align-self:auto;width:min(82vw,300px);height:100%;z-index:20;background:var(--card);flex-direction:column;overflow-x:hidden;overflow-y:auto;border-right:1px solid var(--ln);border-bottom:0;padding:calc(env(safe-area-inset-top) + 18px) 14px calc(env(safe-area-inset-bottom) + 16px);gap:4px;transform:translateX(-102%);transition:transform .28s ease}
 .side.open{transform:none;box-shadow:0 0 48px rgba(0,0,0,.28)}
 .ni{width:100%;height:46px;white-space:normal}
-.dhead{display:flex;align-items:center;padding:2px 12px 20px;width:auto}
-.dfoot{display:grid;gap:10px;margin-top:auto;padding:16px 4px 0;border-top:1px solid var(--ln)}.dfoot .mut{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.scrim{display:block;position:fixed;inset:0;background:rgba(0,0,0,.42);opacity:0;pointer-events:none;transition:opacity .28s;z-index:15}.scrim.on{opacity:1;pointer-events:auto}
 .ph h1{font-size:30px}.ph{margin-bottom:24px}
 .card>h2{font-size:21px}
 }
-@media(prefers-reduced-motion:reduce){.side,.scrim{transition:none}}
+@media(prefers-reduced-motion:reduce){.side{transition:none}}
 
 /* ---------- Mood: warm beige, white cards, ink + butter-yellow + coral ---------- */
 body{background:var(--pg)}
@@ -147,7 +147,6 @@ input,select,textarea{border-radius:12px;border-color:transparent}
 .bar{background:var(--bg)}.bar i{background:var(--co)}
 .subtabs{background:var(--card);border-color:transparent;border-radius:99px}.st{border-radius:99px}
 th:first-child{border-radius:99px 0 0 99px}th:last-child{border-radius:0 99px 99px 0}
-.chip{border-radius:99px}
 @media(max-width:760px){.ni:hover{background:var(--bg)}}
 
 /* ---------- Serif retune: Playfair Display, bolder, lining numbers ---------- */
@@ -195,7 +194,6 @@ td input:focus,td select:focus{box-shadow:0 0 0 3px color-mix(in srgb,var(--ac) 
 .sm,.vtog,.rg{display:none}
 @media(max-width:760px){
 :root{--tbh:64px}
-.bg,.scrim,.dfoot,.dhead{display:none!important}
 body{padding-bottom:0}
 /* top bar */
 .top{height:60px;padding:0 18px;gap:10px;background:var(--pg);border-bottom:0}
@@ -237,6 +235,7 @@ footer{display:none}
 .gtool .gtot{order:9;flex:1 1 100%;margin:0 2px}
 .add{gap:10px}.add input,.add select{height:42px}
 #toast{bottom:calc(var(--tbh) + 30px + env(safe-area-inset-bottom))}
+input,select,textarea,#sn-root input,#sn-root textarea{font-size:16px!important}
 /* list / sheet toggle */
 .vtog{display:flex;gap:2px;padding:3px;margin:14px 0 0 auto;width:max-content;background:var(--bg);border-radius:99px}
 .vtog button{height:30px;padding:0 15px;border:0;border-radius:99px;background:none;color:var(--mut);font:inherit;font-size:13px;font-weight:600;cursor:pointer}
@@ -305,14 +304,15 @@ savings:{t:'Savings',c:[['saved_on','Date','date'],['note','Note'],['amount','Am
 vendors:{t:'Vendors',c:[['name','Vendor'],['category','Category'],['contact','Contact'],['price','Price (Rp)','idr'],['fixed_price','Fixed price (Rp)','idr'],['status','Status','sel',['researching','contacted','booked','paid']],['notes','Notes']]}};
 let sb,user,S={},D={},tab='dashboard',editTarget=false,editDet=false;
 let th=ls.get('wp_theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');document.documentElement.dataset.theme=th;
-const setTheme=t=>{th=t;ls.set('wp_theme',t);const apply=()=>{document.documentElement.dataset.theme=t;renderNow()};
+const setTheme=t=>{th=t;ls.set('wp_theme',t);const apply=()=>{document.documentElement.dataset.theme=t;document.querySelector('meta[name=theme-color]').content=t=='dark'?'#121317':'#efebe4';renderNow()};
  if(!vtOK()||!document.querySelector('.app'))return apply();
- const b=document.querySelector('.top .tg:not(.bg)'),r=b?b.getBoundingClientRect():{left:innerWidth-60,top:30,width:0,height:0},x=r.left+r.width/2,y=r.top+r.height/2,end=Math.hypot(Math.max(x,innerWidth-x),Math.max(y,innerHeight-y)),de=document.documentElement;
+ const b=document.querySelector('.top .tg'),r=b?b.getBoundingClientRect():{left:innerWidth-60,top:30,width:0,height:0},x=r.left+r.width/2,y=r.top+r.height/2,end=Math.hypot(Math.max(x,innerWidth-x),Math.max(y,innerHeight-y)),de=document.documentElement;
  de.classList.add('vt-theme');const tr=document.startViewTransition(apply);
  tr.ready.then(()=>de.animate({clipPath:[`circle(0px at ${x}px ${y}px)`,`circle(${end}px at ${x}px ${y}px)`]},{duration:700,easing:'cubic-bezier(.22,.9,.24,1)',pseudoElement:'::view-transition-new(root)'})).catch(()=>{});
  tr.finished.finally(()=>de.classList.remove('vt-theme'))};
 const R=n=>D[n];
 const cfg=()=>{if(SUPABASE_URL&&SUPABASE_ANON_KEY)return{url:SUPABASE_URL,key:SUPABASE_ANON_KEY};try{return JSON.parse(ls.get('wp_cfg'))}catch(e){return null}};
+const sqlHint=m=>/column|schema cache/i.test(m||'');
 function toast(m){const t=$('#toast');t.textContent=m;t.style.display='block';clearTimeout(toast.h);toast.h=setTimeout(()=>t.style.display='none',3500)}
 function init(){const c=cfg();if(!c)return setup();
  sb=supabase.createClient(c.url,c.key);
@@ -324,7 +324,7 @@ function authView(msg=''){$('#app').innerHTML=`<div class="land"><div><h1>Weddin
 <form class="card" onsubmit="event.preventDefault();auth()"><h2>Log in</h2><p class="mut">Use the email and password you were given.</p>
 <input id="em" type="email" placeholder="Email" autocomplete="email" required><input id="pw" type="password" placeholder="Password" autocomplete="current-password" required>
 <p class="mut" id="am" role="alert">${esc(msg)}</p><button class="b" type="submit" style="width:100%">Log in</button>
-<p class="mut"><a onclick="ls.del('wp_cfg');location.reload()">Change Supabase project</a></p></form></div>`}
+${SUPABASE_URL&&SUPABASE_ANON_KEY?'':`<p class="mut"><a onclick="ls.del('wp_cfg');location.reload()">Change Supabase project</a></p>`}</form></div>`}
 async function auth(){const {error}=await sb.auth.signInWithPassword({email:$('#em').value.trim(),password:$('#pw').value});
  if(!error)return;const m=error.message||'';
  $('#am').textContent=/invalid login/i.test(m)?'Wrong email or password, or this Supabase project is not the one where the user is registered.':/not confirmed/i.test(m)?'This user is not confirmed. In Supabase, open Authentication → Users and confirm it.':m}
@@ -336,17 +336,13 @@ const days=d=>d?Math.ceil((new Date(d+'T00:00')-new Date().setHours(0,0,0,0))/86
 const dots=n=>String(Math.round(+n||0)).replace(/\B(?=(\d{3})+(?!\d))/g,'.'),money=n=>'Rp '+dots(n),
 fmt=v=>v===''||v==null||+v===0?'':dots(v),
 fmtIn=el=>{const d=el.value.replace(/\D/g,'');el.value=d?d.replace(/\B(?=(\d{3})+(?!\d))/g,'.'):''},
-pc=r=>(+r.estimated?Math.round((+r.dp||0)/+r.estimated*100):0)+'%',
 CALC=['rem','stat'],
 bal=r=>Math.max(0,(+r.agreed||0)-(+r.dp||0)),
 stat=r=>{const a=+r.agreed||0,p=+r.dp||0;return !a?'Not agreed':p>=a?'Paid':p>0?'Partial':'Unpaid'},
 calc=(c,r)=>c[2]=='rem'?(+r.agreed?money(bal(r)):'—'):`<span class="st-${stat(r).toLowerCase().replace(' ','-')}">${stat(r)}</span>`;
-const IC={dashboard:'<path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/>',details:'<path d="M12 21s-8-5.5-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 5.5-8 11-8 11z"/>',guests:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/><path d="M16 4.6a3.5 3.5 0 0 1 0 6.8M18.5 14.4c1.9.8 3 2.7 3 5.6"/>',budget_items:'<rect x="3" y="6" width="18" height="13" rx="3"/><path d="M3 10h18"/><circle cx="16.5" cy="14.5" r="1"/>',tasks:'<rect x="3.5" y="3.5" width="17" height="17" rx="4"/><path d="M8 12.5l3 3 5-6"/>',savings:'<ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6"/><path d="M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/>',vendors:'<path d="M4 9l1.5-5h13L20 9"/><path d="M4 9a2.7 2.7 0 0 0 5.3 0 2.7 2.7 0 0 0 5.4 0A2.7 2.7 0 0 0 20 9"/><path d="M5 12v8h14v-8"/>',moon:'<path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/>',sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',out:'<path d="M9 4H5v16h4"/><path d="M16 8l4 4-4 4M20 12H9"/>'},
+const IC={dashboard:'<path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/>',details:'<path d="M12 21s-8-5.5-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 5.5-8 11-8 11z"/>',guests:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/><path d="M16 4.6a3.5 3.5 0 0 1 0 6.8M18.5 14.4c1.9.8 3 2.7 3 5.6"/>',budget_items:'<rect x="3" y="6" width="18" height="13" rx="3"/><path d="M3 10h18"/><circle cx="16.5" cy="14.5" r="1"/>',tasks:'<rect x="3.5" y="3.5" width="17" height="17" rx="4"/><path d="M8 12.5l3 3 5-6"/>',savings:'<ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6"/><path d="M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/>',vendors:'<path d="M4 9l1.5-5h13L20 9"/><path d="M4 9a2.7 2.7 0 0 0 5.3 0 2.7 2.7 0 0 0 5.4 0A2.7 2.7 0 0 0 20 9"/><path d="M5 12v8h14v-8"/>',moon:'<path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/>',sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>'},
 TT={dashboard:['Overview','Everything for the big day at a glance'],guests:['Guests','Both sides, sorted and colour-coded'],budget_items:['Budget','What it costs and what is paid'],tasks:['Checklist','Tick things off one by one'],savings:['Savings','Building the wedding fund'],vendors:['Vendors','Who is booked and who is not']},
 svg=k=>`<svg viewBox="0 0 24 24" aria-hidden="true">${IC[k]}</svg>`;
-let navOpen=false;
-function toggleNav(v){navOpen=v;const a=$('.side'),b=$('.scrim'),g=$('.bg');if(a)a.classList.toggle('open',v);if(b)b.classList.toggle('on',v);if(g)g.setAttribute('aria-expanded',v);document.body.style.overflow=v?'hidden':''}
-addEventListener('keydown',e=>{if(e.key=='Escape'&&navOpen)toggleNav(false)});
 const vtOK=()=>!!document.startViewTransition;
 /* ---- Motion engine (works in every browser): FLIP glide + staggered enter ---- */
 const EASE='cubic-bezier(.22,.9,.24,1)',motionOK=()=>!!Element.prototype.animate;
@@ -414,7 +410,7 @@ function buildSum(r){
  else{title=g(tds[0].dataset.label||'');tds.slice(1,4).forEach(td=>{const v=g(td.dataset.label||'');if(v)sub.push(v)})}
  const subs=sub.filter(Boolean).join(' · '),
  h=(m?'<span class="dt" style="--cc:'+esc2(m[1].trim())+'"></span>':'')+'<div class="tx"><div class="t'+(title?'':' e')+(done?' done':'')+'">'+esc2(title||'Untitled')+'</div>'+(subs?'<div class="sub">'+esc2(subs)+'</div>':'')+bar+'</div>'+(right?'<div class="rt">'+right+'</div>':'')+'<span class="dn">Close</span>'+CH;
- let sm=r.querySelector(':scope>.sm');if(!sm){sm=document.createElement('div');sm.className='sm';sm.setAttribute('role','button');sm.innerHTML=h;r.insertBefore(sm,r.firstChild)}else if(sm.innerHTML!==h)sm.innerHTML=h}
+ let sm=r.querySelector(':scope>.sm');if(!sm){sm=document.createElement('div');sm.className='sm';sm.setAttribute('role','button');sm.innerHTML=h;r.insertBefore(sm,r.firstChild)}else if(sm._h!==h)sm.innerHTML=h;sm._h=h}
 document.addEventListener('click',e=>{const sm=e.target.closest('main .sm');if(sm){sm.parentElement.classList.toggle('open');return}
  const b=e.target.closest('.vtog button');if(b){try{localStorage.setItem('wp_mview',b.dataset.v)}catch(x){}labelCells()}});
 document.addEventListener('change',e=>{const r=e.target.closest&&e.target.closest('main tr[data-id]');if(r)buildSum(r)});
@@ -426,24 +422,35 @@ function render(){
  renderNow();labelCells();
  if(had){try{playM(old,chg)}catch(e){}}
  return Promise.resolve()}
-function renderNow(){const t=TT[tab];
- $('#app').innerHTML=`<div class="app"><header class="top"><button class="tg bg" aria-label="Open menu" aria-expanded="false" onclick="toggleNav(!navOpen)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h16M4 16h16"/></svg></button><div class="brand"><span class="logo"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="16" r="8"/><circle cx="20" cy="16" r="8"/></svg></span>Wedding Dream</div><span class="sp"></span><span class="em">${esc(user.email)}</span><button class="tg" title="Switch theme" aria-label="Switch theme" onclick="setTheme(th=='dark'?'light':'dark')">${svg(th=='dark'?'sun':'moon')}</button><button class="b ghost" onclick="sb.auth.signOut()">Log out</button></header>
-<div class="lay"><div class="scrim" onclick="toggleNav(false)"></div><nav class="side"><div class="brand dhead"><span class="logo"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="16" r="8"/><circle cx="20" cy="16" r="8"/></svg></span>Wedding Dream</div>${Object.keys(TT).map(k=>`<button class="ni ${tab==k?'on':''}" onclick="tab='${k}';toggleNav(false);render()">${svg(k)}<span>${TT[k][0]}</span></button>`).join('')}<div class="dfoot"><span class="mut">${esc(user.email)}</span><button class="b ghost" onclick="sb.auth.signOut()">Log out</button></div></nav>
-<div class="body"><div class="ph"><h1>${t[0]}</h1><p class="mut">${t[1]}</p></div><main>${tab=='dashboard'?dash():tab=='guests'?gst():tab=='savings'?sav()+svt():tab=='budget_items'?bud()+tbl(tab):tbl(tab)}</main><footer>&copy; ${new Date().getFullYear()} Fatah &amp; Khairy · Private planner</footer></div></div></div>`}
+const view=()=>tab=='dashboard'?dash():tab=='guests'?gst():tab=='savings'?sav()+svt():tab=='budget_items'?bud()+tbl(tab):tbl(tab);
+function renderNow(){/* keeps expanded cards and the focused field across a re-render */
+ const open=[...document.querySelectorAll('main tr.open[data-id]')].map(r=>r.dataset.id),a=document.activeElement,td=a&&a.closest&&a.closest('main td'),tr=td&&td.closest('tr[data-id]'),
+ fk=tr?{id:tr.dataset.id,i:[...tr.children].indexOf(td),s:a.selectionStart,e:a.selectionEnd}:null;
+ paint();
+ open.forEach(id=>{const r=document.querySelector(`main tr[data-id="${id}"]`);if(r)r.classList.add('open')});
+ if(fk){const r=document.querySelector(`main tr[data-id="${fk.id}"]`),el=r&&r.children[fk.i]&&r.children[fk.i].querySelector('input,select');
+  if(el&&el!==document.activeElement){try{el.focus({preventScroll:true});if(fk.s!=null)el.setSelectionRange(fk.s,fk.e)}catch(x){}}}}
+/* refresh only totals / computed cells so inputs the user is typing in are never rebuilt */
+function refreshLive(){const m=document.querySelector('main');if(!m)return;const t=document.createElement('div');t.innerHTML=view();
+ const a=[...m.querySelectorAll('[data-live]')],b=[...t.querySelectorAll('[data-live]')];if(a.length!=b.length)return render();
+ a.forEach((x,i)=>{if(!x.contains(document.activeElement))x.replaceWith(b[i])})}
+function paint(){const t=TT[tab];
+ $('#app').innerHTML=`<div class="app"><header class="top"><div class="brand"><span class="logo"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="16" r="8"/><circle cx="20" cy="16" r="8"/></svg></span>Wedding Dream</div><span class="sp"></span><span class="em">${esc(user.email)}</span><button class="tg" title="Switch theme" aria-label="Switch theme" onclick="setTheme(th=='dark'?'light':'dark')">${svg(th=='dark'?'sun':'moon')}</button><button class="b ghost" onclick="sb.auth.signOut()">Log out</button></header>
+<div class="lay"><nav class="side">${Object.keys(TT).map(k=>`<button class="ni ${tab==k?'on':''}" onclick="tab='${k}';render()">${svg(k)}<span>${TT[k][0]}</span></button>`).join('')}</nav>
+<div class="body"><div class="ph"><h1>${t[0]}</h1><p class="mut">${t[1]}</p></div><main>${view()}</main><footer>&copy; ${new Date().getFullYear()} Fatah &amp; Khairy · Private planner</footer></div></div></div>`}
 const fdate=d=>new Date(d+'T00:00').toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'}),
 kpi=(l,v,s,p,f)=>`<div class="card kpi"><div class="mut">${l}</div><div class="kv"><b>${v}</b><span>${s}</span></div><div class="bar"><i style="width:${p}%"></i></div><div class="mut" style="margin-top:12px">${f}</div></div>`;
 function hero(pen){const d=S.wedding_date,n=days(d),names=[S.partner1,S.partner2].filter(Boolean).join(' & ')||'Our wedding';
- return `<section class="hero"><div><h2>${esc(names)}</h2><p class="hv">${esc(S.wedding_venue||'Add a venue in the details')}</p></div><div class="hc"><div class="num big">${n==null?'—':n<0?'Done':n}</div><div class="hs">${n==null?'Set a date with the pencil icon':n<0?'Celebrated '+fdate(d):n==1?'day to go · '+fdate(d):'days to go · '+fdate(d)}</div></div><button class="x" aria-label="Edit details" title="Edit details" onclick="editDet=true;render()">${pen}</button></section>`}
+ return `<section class="hero"><div><h2>${esc(names)}</h2><p class="hv">${esc(S.wedding_venue||'Add a venue in the details')}</p></div><div class="hc"><div class="num big">${n==null?'—':n<0?'Done':n}</div><div class="hs">${n==null?'Set a date with the pencil icon':n<0?'Celebrated '+fdate(d):n==0?'Today · '+fdate(d):n==1?'day to go · '+fdate(d):'days to go · '+fdate(d)}</div></div><button class="x" aria-label="Edit details" title="Edit details" onclick="editDet=true;render()">${pen}</button></section>`}
 function dash(){const g=R('guests'),bi=R('budget_items'),tk=R('tasks'),yes=g.filter(x=>x.rsvp=='yes'),head=yes.reduce((a,x)=>a+1+(+x.plus_ones||0),0),inv=g.reduce((a,x)=>a+1+(+x.plus_ones||0),0),
  est=bi.reduce((a,x)=>a+(+x.estimated||0),0),dp=bi.reduce((a,x)=>a+(+x.dp||0),0),tb=+S.total_budget||0,
  td=tk.filter(x=>x.done).length,tt=tk.length,pct=(a,b)=>b?Math.min(100,a/b*100):0,sp=est,sv=D.savings.reduce((a,x)=>a+(+x.amount||0),0),st=+S.savings_target||0;
- const pen='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>',
- empty=!S.partner1&&!S.partner2&&!S.wedding_date&&!S.wedding_venue&&!S.total_budget;
+ const pen='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>';
  if(editDet)return det();
  return `${hero(pen)}<div class="grid">${kpi('Guests confirmed',head,`of ${inv} invited`,pct(head,inv),`${g.filter(x=>x.rsvp=='pending').length} still pending`)}${kpi('Budget',money(sp),`of ${money(tb)}`,pct(sp,tb),`Estimated · Paid ${money(dp)} (${est?Math.round(dp/est*100):0}%)${tb&&sp>tb?' — over budget':''}`)}${kpi('Checklist',td,`of ${tt} done`,pct(td,tt),`${D.vendors.filter(v=>v.status=='booked'||v.status=='paid').length} of ${D.vendors.length} vendors booked`)}${kpi('Savings target',(st?Math.round(sv/st*100):0)+'%',`${money(sv)} of ${money(st)}`,st?Math.min(100,sv/st*100):0,st?(sv<st?money(st-sv)+' to go':'Target reached'):'Set a target in the Savings tab')}</div>`}
 function sav(){const sv=D.savings.reduce((a,x)=>a+(+x.amount||0),0),by=k=>D.savings.filter(x=>(x.side||'shared')==k).reduce((a,x)=>a+(+x.amount||0),0),sp1=by('partner 1'),sp2=by('partner 2'),spu=by('shared'),t=+S.savings_target||0,p=t?Math.round(sv/t*100):0,ed=editTarget||!t,
  pen='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>';
- return `<div class="card"><div class="ch"><h2>Our savings target</h2>${ed?'':`<button class="x" aria-label="Edit target" title="Edit target" onclick="editTarget=true;render()">${pen}</button>`}</div>
+ return `<div class="card" data-live><div class="ch"><h2>Our savings target</h2>${ed?'':`<button class="x" aria-label="Edit target" title="Edit target" onclick="editTarget=true;render()">${pen}</button>`}</div>
 ${ed?`<div class="f"><label>Target (Rp)<input type="text" inputmode="numeric" id="s_savings_target" value="${fmt(S.savings_target)}" oninput="fmtIn(this)" placeholder="e.g. 100.000.000"></label></div><div class="acts"><button class="b" onclick="saveS()">Save target</button>${t?`<button class="b ghost" onclick="editTarget=false;render()">Cancel</button>`:''}</div>`
 :`<div class="kv"><b>${p}%</b><span>${money(sv)} of ${money(t)}${sv<t?' · '+money(t-sv)+' to go':' · target reached'}</span></div><div class="bar"><i style="width:${Math.min(100,p)}%"></i></div><p class="mut" style="margin-top:12px">${esc(sideN('partner 1'))} <b>${money(sp1)}</b> · ${esc(sideN('partner 2'))} <b>${money(sp2)}</b>${spu?` · Not assigned <b>${money(spu)}</b>`:''}</p>`}</div>`}
 /* ---------- Savings: one section per person ---------- */
@@ -456,41 +463,35 @@ function svt(){
  ro=r=>{const g=f=>`onchange="upd('savings','${r.id}','${f}',this)"`,pg=(f,t)=>g(f)+` placeholder="${t}"`;
   return `<tr data-id="${r.id}"><td>${inp(['saved_on','Date','date'],r.saved_on,pg('saved_on','Date'))}</td><td>${inp(['note','Note'],r.note,pg('note','Note'))}</td><td>${inp(['amount','Amount','idr'],r.amount,pg('amount','Amount (Rp)'))}</td><td><select ${g('side')} aria-label="Side">${so(sd(r))}</select></td><td><button class="x" aria-label="Delete" onclick="del('savings','${r.id}')">×</button></td></tr>`};
  return `<div class="gtool"><div class="subtabs" role="tablist">${secs.map(([kk,r])=>`<button role="tab" aria-selected="${kk==k}" class="st ${kk==k?'on':''}" onclick="sSide='${kk}';render()">${kk=='shared'?'Not assigned':esc(sideN(kk))+"'s savings"} <span style="opacity:.7">${r.length}</span></button>`).join('')}</div>
-<span class="sp"></span><span class="mut gtot">${A.length} deposits · ${money(tot(A))}</span></div>
-<div class="card"><div class="ch"><h2>${k=='shared'?'Not assigned yet':esc(sideN(k))+"'s savings"}</h2><span class="mut">${rows.length} deposits · Total <b>${money(tot(rows))}</b></span></div>
+<span class="sp"></span><span class="mut gtot" data-live>${A.length} deposits · ${money(tot(A))}</span></div>
+<div class="card"><div class="ch"><h2>${k=='shared'?'Not assigned yet':esc(sideN(k))+"'s savings"}</h2><span class="mut" data-live>${rows.length} deposits · Total <b>${money(tot(rows))}</b></span></div>
 ${k=='shared'?`<p class="mut">Use the last dropdown on each row to move these deposits to ${esc(sideN('partner 1'))} or ${esc(sideN('partner 2'))}.</p>`:''}
 <div class="wrap"><table class="mt"><tr><th>Date</th><th>Note</th><th>Amount (Rp)</th><th>Side</th><th></th></tr>${rows.map(ro).join('')}${k=='shared'?'':`<tr class="addrow"><td colspan="5"><button class="addbtn" onclick="addSv()">+ Add deposit</button></td></tr>`}</table></div></div>`}
 async function addSv(){const {data,error}=await sb.from('savings').insert({amount:0,side:sSide}).select().single();
- if(error)return toast(/side/.test(error.message)?'Run the SQL update first (adds the side column), then try again.':error.message);
+ if(error)return toast(sqlHint(error.message)?'Run the SQL update first (adds the side column), then try again.':error.message);
  D.savings.push(data);await render();const el=document.querySelector(`tr[data-id="${data.id}"] input[type=text],tr[data-id="${data.id}"] input[type=date]`);if(el){el.closest('tr').classList.add('open');el.focus()}}
 function bud(){const sv=D.savings.reduce((a,x)=>a+(+x.amount||0),0),t=+S.savings_target||0,est=D.budget_items.reduce((a,x)=>a+(+x.estimated||0),0),p=t?Math.round(sv/t*100):0,c=est?Math.round(sv/est*100):0,d=sv-est;
- return `<div class="grid">${kpi('Savings target',p+'%',`${money(sv)} of ${money(t)}`,Math.min(100,p),t?(sv<t?money(t-sv)+' to go':'Target reached'):'Set a target in the Savings tab')}${kpi('Savings vs estimated budget',c+'%',`of ${money(est)} covered`,Math.min(100,c),est?(d>=0?'Surplus '+money(d):'Short by '+money(-d)):'Add budget lines below')}</div>`}
+ return `<div class="grid" data-live>${kpi('Savings target',p+'%',`${money(sv)} of ${money(t)}`,Math.min(100,p),t?(sv<t?money(t-sv)+' to go':'Target reached'):'Set a target in the Savings tab')}${kpi('Savings vs estimated budget',c+'%',`of ${money(est)} covered`,Math.min(100,c),est?(d>=0?'Surplus '+money(d):'Short by '+money(-d)):'Add budget lines below')}</div>`}
 function det(){const f=(k,l,t='text')=>`<label>${l}<input type="${t=='idr'?'text':t}" id="s_${k}" value="${t=='idr'?fmt(S[k]):esc(S[k])}" ${t=='idr'?'inputmode="numeric" oninput="fmtIn(this)"':''}></label>`;
  return `<div class="card"><h2>Wedding details</h2><div class="f">${f('partner1','Partner 1')}${f('partner2','Partner 2')}${f('wedding_date','Wedding date','date')}${f('wedding_venue','Wedding venue')}${f('total_budget','Total budget (Rp)','idr')}</div><div class="acts"><button class="b" onclick="saveS()">Save details</button><button class="b ghost" onclick="editDet=false;render()">Cancel</button></div></div>`}
 async function saveS(){const p={user_id:user.id};document.querySelectorAll('[id^=s_]').forEach(el=>{let v=el.value;if(el.id=='s_total_budget'||el.id=='s_savings_target')v=v.replace(/\./g,'');p[el.id.slice(2)]=v===''?null:v});
  const {data,error}=await sb.from('wedding_settings').upsert(p,{onConflict:'user_id'}).select().single();
  if(error)return toast(error.message);S=data;editTarget=false;editDet=false;render();toast('Saved.')}
 function inp(c,v,h){const [k,,ty,o]=c;
- if(ty=='sel'){const oo=typeof o=='function'?o():o;return `<select ${k=='status'?`class="sv-${String(v||'').replace(/\W+/g,'-')}"`:''} ${h}>${oo.map(x=>`<option ${x==v?'selected':''}>${esc(x)}</option>`).join('')}</select>`}
+ if(ty=='sel'){const oo=[...(typeof o=='function'?o():o)];if(v&&!oo.includes(v))oo.push(v);return `<select ${k=='status'?`class="sv-${String(v||'').replace(/\W+/g,'-')}"`:''} ${h}>${oo.map(x=>`<option ${x==v?'selected':''}>${esc(x)}</option>`).join('')}</select>`}
  if(ty=='idr')return `<input type="text" inputmode="numeric" value="${fmt(v)}" ${h} oninput="fmtIn(this)">`;
  if(ty=='checkbox')return `<input type="checkbox" ${v?'checked':''} ${h}>`;
  return `<input type="${ty||'text'}" value="${esc(v)}" ${h} ${ty=='number'?'step="any"':''}>`}
 const MIN={vendors:['+ Add vendor',{name:'',status:'researching'}],budget_items:['+ Add line',{item:''}],tasks:['+ Add task',{title:'',done:false,status:'Not yet'}]};
 function tbl(n){const e=E[n],rows=D[n],mn=MIN[n];
- let sum='';if(n=='budget_items'){const a=k=>rows.reduce((s,x)=>s+(+x[k]||0),0);sum=`<p class="mut">Estimate <b>${money(a('estimated'))}</b> · Agreed <b>${money(a('agreed'))}</b> · Paid <b>${money(a('dp'))}</b> · Balance due <b>${money(rows.reduce((s,x)=>s+bal(x),0))}</b> · ${rows.filter(x=>stat(x)=='Paid').length}/${rows.length} fully paid</p>`}
- if(n=='savings')sum=`<p class="mut">${rows.length} deposits · Total <b>${money(rows.reduce((s,x)=>s+(+x.amount||0),0))}</b></p>`;
- if(n=='guests')sum=`<p class="mut">${rows.length} parties · ${rows.reduce((s,x)=>s+1+(+x.plus_ones||0),0)} people</p>`;
+ let sum='';if(n=='budget_items'){const a=k=>rows.reduce((s,x)=>s+(+x[k]||0),0);sum=`<p class="mut" data-live>Estimate <b>${money(a('estimated'))}</b> · Agreed <b>${money(a('agreed'))}</b> · Paid <b>${money(a('dp'))}</b> · Balance due <b>${money(rows.reduce((s,x)=>s+bal(x),0))}</b> · ${rows.filter(x=>stat(x)=='Paid').length}/${rows.length} fully paid</p>`}
  return `<div class="card"><h2>${e.t}</h2>${sum}
-${mn?'':`<div class="add">${e.c.filter(c=>!CALC.includes(c[2])).map(c=>inp(c,'',`id="n_${c[0]}" placeholder="${c[1]}"`)).join('')}<button class="b" onclick="add('${n}')">Add</button></div>`}
-<div class="wrap"><table${mn?` class="mt${n=='vendors'?' vt':''}${n=='budget_items'?' bt':''}${n=='tasks'?' tt':''}"`:''}><tr>${e.c.map(c=>`<th>${c[1]}</th>`).join('')}<th></th></tr>${rows.map(r=>`<tr data-id="${r.id}">${e.c.map(c=>CALC.includes(c[2])?`<td${c[2]=='rem'?' class="bal"':''}>${calc(c,r)}</td>`:`<td>${inp(c,r[c[0]]??(n=='tasks'&&c[0]=='status'?(r.done?'Done':'Not yet'):''),`onchange="upd('${n}','${r.id}','${c[0]}',this)"${mn?` placeholder="${c[1]}"`:''}`)}</td>`).join('')}<td><button class="x" aria-label="Delete" onclick="del('${n}','${r.id}')">×</button></td></tr>`).join('')||(mn?'':`<tr><td colspan="8" class="mut">Nothing here yet — add your first entry above.</td></tr>`)}${mn?`<tr class="addrow"><td colspan="${e.c.length+1}"><button class="addbtn" onclick="addBlank('${n}')">${mn[0]}</button></td></tr>`:''}</table></div></div>`}
-async function addBlank(n){const {data,error}=await sb.from(n).insert(MIN[n][1]).select().single();if(error)return toast(n=='tasks'&&/column/.test(error.message)?'Run the SQL update first (adds the new checklist columns), then try again.':error.message);D[n].push(data);await render();const el=document.querySelector(`tr[data-id="${data.id}"] input:not([type=checkbox])`);if(el){el.closest('tr').classList.add('open');el.focus()}}
+<div class="wrap"><table class="mt${n=='vendors'?' vt':''}${n=='budget_items'?' bt':''}${n=='tasks'?' tt':''}"><tr>${e.c.map(c=>`<th>${c[1]}</th>`).join('')}<th></th></tr>${rows.map(r=>`<tr data-id="${r.id}">${e.c.map(c=>CALC.includes(c[2])?`<td${c[2]=='rem'?' class="bal"':''} data-live>${calc(c,r)}</td>`:`<td>${inp(c,r[c[0]]??(n=='tasks'&&c[0]=='status'?(r.done?'Done':'Not yet'):''),`onchange="upd('${n}','${r.id}','${c[0]}',this)" placeholder="${c[1]}"`)}</td>`).join('')}<td><button class="x" aria-label="Delete" onclick="del('${n}','${r.id}')">×</button></td></tr>`).join('')}<tr class="addrow"><td colspan="${e.c.length+1}"><button class="addbtn" onclick="addBlank('${n}')">${mn[0]}</button></td></tr></table></div></div>`}
+async function addBlank(n){const {data,error}=await sb.from(n).insert(MIN[n][1]).select().single();if(error)return toast(sqlHint(error.message)?'Run the SQL update first (adds the new checklist columns), then try again.':error.message);D[n].push(data);await render();const el=document.querySelector(`tr[data-id="${data.id}"] input:not([type=checkbox])`);if(el){el.closest('tr').classList.add('open');el.focus()}}
 const val=(c,el)=>c[2]=='checkbox'?el.checked:c[2]=='idr'?(el.value===''?0:+el.value.replace(/\./g,'')):c[2]=='number'?(el.value===''?0:+el.value):(el.value===''?null:el.value);
-async function add(n){const row={};E[n].c.filter(c=>!CALC.includes(c[2])).forEach(c=>{const el=$('#n_'+c[0]),v=val(c,el);if(v!==null&&!(c[2]=='sel'&&v==='')&&!(c[2]=='number'&&v===0&&el.value===''))row[c[0]]=v});
- const ri={tasks:1,savings:2}[n]||0,req=E[n].c[ri][0];if(!row[req])return toast('Fill in '+E[n].c[ri][1].toLowerCase()+' first.');
- const {data,error}=await sb.from(n).insert(row).select().single();if(error)return toast(/agreed/.test(error.message)?'Run the SQL update first (adds the agreed column), then try again.':error.message);D[n].push(data);render()}
 function upd(n,id,k,el){return lastUpd=upd0(n,id,k,el)}
 async function upd0(n,id,k,el){const c=E[n].c.find(c=>c[0]==k),v=val(c,el),{error}=await sb.from(n).update({[k]:v,...(n=='tasks'&&k=='status'?{done:v=='Done'}:{})}).eq('id',id);
- if(error)return toast(/agreed|side|notes|pic|status|category/.test(error.message)?'Run the SQL update first (adds the new column), then try again.':error.message);{const rw=D[n].find(r=>r.id==id);rw[k]=v;if(n=='tasks'&&k=='status')rw.done=v=='Done'}if(c[2]=='checkbox'||c[2]=='sel'||n=='budget_items')render()}
+ if(error)return toast(sqlHint(error.message)?'Run the SQL update first (adds the new column), then try again.':error.message);{const rw=D[n].find(r=>r.id==id);rw[k]=v;if(n=='tasks'&&k=='status')rw.done=v=='Done'}if(c[2]=='checkbox'||c[2]=='sel')render();else if(n=='budget_items'||(n=='savings'&&k=='amount')||(n=='guests'&&k=='plus_ones'))refreshLive()}
 async function del(n,id){if(!confirm('Delete this entry?'))return;const {error}=await sb.from(n).delete().eq('id',id);if(error)return toast(error.message);
  const tr=motionOK()&&document.querySelector(`tr[data-id="${id}"]`);if(tr){try{await tr.animate([{opacity:1,transform:'none'},{opacity:0,transform:'translateX(28px)'}],{duration:260,easing:'ease-in',fill:'forwards'}).finished}catch(e){}}
  D[n]=D[n].filter(r=>r.id!=id);render()}
@@ -500,15 +501,13 @@ let gFilter='',gSort='name',gManage=false,gSide='partner 1',gNew=null,lastUpd=nu
 const cats=()=>Array.isArray(S.guest_categories)&&S.guest_categories.length?S.guest_categories:DEF_CATS,
 catC=n=>(cats().find(x=>x.n==n)||{}).c||'',
 hc=g=>1+(+g.plus_ones||0),
-sideN=k=>k=='partner 1'?(S.partner1||'Partner 1'):k=='partner 2'?(S.partner2||'Partner 2'):'Shared',
-gF=i=>{gFilter=i<0?'':cats()[i].n;render()};
+sideN=k=>k=='partner 1'?(S.partner1||'Partner 1'):k=='partner 2'?(S.partner2||'Partner 2'):'Shared';
 function gst(){
  const cs=cats(),G=D.guests,sum=a=>a.reduce((s,g)=>s+hc(g),0),tot=sum(G),
  ci=g=>{const i=cs.findIndex(c=>c.n==g.category);return i<0?999:i},ro={pending:0,yes:1,no:2},nm=(a,b)=>String(a.name||'').localeCompare(String(b.name||'')),
  cmp=gSort=='category'?(a,b)=>ci(a)-ci(b)||nm(a,b):gSort=='rsvp'?(a,b)=>(ro[a.rsvp]??9)-(ro[b.rsvp]??9)||nm(a,b):nm,
  seg=[...cs.map(c=>[c.n,c.c,sum(G.filter(g=>g.category==c.n))]),['No category','var(--ln)',sum(G.filter(g=>!cs.some(c=>c.n==g.category)))]].filter(x=>x[2]),
  catOpts=sel=>`<option value="">No category</option>${cs.map(x=>`<option value="${esc(x.n)}" ${x.n==sel?'selected':''}>${esc(x.n)}</option>`).join('')}`,
- chip=(i,l,c,n)=>{const on=(i<0?'':cs[i].n)===gFilter;return `<button class="chip ${on?'on':''}" ${on&&c?`style="background:${c};color:#fff"`:''} onclick="gF(${i})">${c?`<span class="dot" style="background:${c}"></span>`:''}${esc(l)} <span style="opacity:.7">${n}</span></button>`},
  row=r=>{const c=catC(r.category),h=k=>`onchange="upd('guests','${r.id}','${k}',this)"`,f=(k,ty='text')=>`<input type="${ty}" value="${esc(r[k])}" ${h(k)} ${k=='name'?'placeholder="Guest name"':''} ${ty=='number'?'step="any"':''}>`;
   return `<tr data-id="${r.id}"${c?` style="background:color-mix(in srgb,${c} 13%,transparent)"`:''}><td${c?` style="box-shadow:inset 4px 0 0 ${c}"`:''}>${f('name')}</td>
 <td><select ${h('category')} aria-label="Category">${catOpts(r.category)}</select></td>
@@ -517,20 +516,20 @@ function gst(){
 <td>${f('notes')}</td>
 <td><button class="x" aria-label="Delete" onclick="del('guests','${r.id}')">×</button></td></tr>`},
  sec=([k,rows])=>{const ix=['partner 1','partner 2'].indexOf(k),vis=rows.filter(g=>!gFilter||g.category==gFilter).sort((a,b)=>((a.id==gNew)-(b.id==gNew))||cmp(a,b)),yes=sum(rows.filter(g=>g.rsvp=='yes'));
-  return `<div class="card"><div class="ch"><h2>${k=='shared'?'Not assigned yet':esc(sideN(k))+"'s guests"}</h2><span class="mut">${rows.length} parties · ${sum(rows)} people · ${yes} confirmed</span></div>
+  return `<div class="card"><div class="ch"><h2>${k=='shared'?'Not assigned yet':esc(sideN(k))+"'s guests"}</h2><span class="mut" data-live>${rows.length} parties · ${sum(rows)} people · ${yes} confirmed</span></div>
 <div class="wrap"><table class="gt mt"><tr><th>Name</th><th>Category</th><th>RSVP</th><th>+1</th><th>Table</th><th>Phone</th><th>Notes</th><th></th></tr>${vis.map(row).join('')||(rows.length?`<tr><td colspan="8" class="mut">No guests in this category.</td></tr>`:'')}${k=='shared'?'':`<tr class="addrow"><td colspan="8"><button class="addbtn" onclick="addG(${ix})">+ Add guest</button></td></tr>`}</table></div></div>`},
  secs=['partner 1','partner 2','shared'].map(k=>[k,G.filter(g=>(g.side||'shared')==k)]).filter(([k,r])=>k!='shared'||r.length),
  cur=secs.find(x=>x[0]==gSide)||secs[0],
  man=gManage?`<div class="card"><h2>Edit categories</h2><div style="height:12px"></div>${cs.map((c,i)=>`<div class="crow"><input type="color" value="${c.c}" onchange="catEd(${i},'c',this)" aria-label="Colour"><input value="${esc(c.n)}" onchange="catEd(${i},'n',this)" aria-label="Category name"><button class="x" onclick="catDel(${i})" aria-label="Delete category">×</button></div>`).join('')}
 <div class="crow"><input type="color" id="nc_c" value="#9b6bd1" aria-label="Colour"><input id="nc_n" placeholder="New category, e.g. Classmates" onkeydown="if(event.key=='Enter')catAdd()"><button class="b" onclick="catAdd()">Add</button></div></div>`:'';
  return `<div class="gtool"><div class="subtabs" role="tablist">${secs.map(([k,r])=>`<button role="tab" aria-selected="${k==cur[0]}" class="st ${k==cur[0]?'on':''}" onclick="gSide='${k}';render()">${k=='shared'?'Not assigned':esc(sideN(k))+"'s guests"} <span style="opacity:.7">${r.length}</span></button>`).join('')}</div>
-<span class="sp"></span><span class="mut gtot">${G.length} parties · ${tot} people</span>
+<span class="sp"></span><span class="mut gtot" data-live>${G.length} parties · ${tot} people</span>
 <select aria-label="Filter by category" onchange="gFilter=this.value;render()"><option value="">All categories</option>${cs.map(c=>`<option value="${esc(c.n)}" ${c.n==gFilter?'selected':''}>${esc(c.n)}</option>`).join('')}</select>
 <select aria-label="Sort by" onchange="gSort=this.value;render()"><option value="name" ${gSort=='name'?'selected':''}>Sort: Name</option><option value="category" ${gSort=='category'?'selected':''}>Sort: Category</option><option value="rsvp" ${gSort=='rsvp'?'selected':''}>Sort: RSVP</option></select>
 <button class="x" aria-label="Edit categories" title="Edit categories" onclick="gManage=!gManage;render()" style="${gManage?'color:var(--ac)':''}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.6 13.4l-7.2 7.2a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1.2"/></svg></button></div>
 ${man}${sec(cur)}`}
 async function catSave(a){const {data,error}=await sb.from('wedding_settings').upsert({user_id:user.id,guest_categories:a},{onConflict:'user_id'}).select().single();
- if(error){toast(/guest_categories/.test(error.message)?'Run the SQL update first (adds guest_categories), then try again.':error.message);return false}S=data;return true}
+ if(error){toast(sqlHint(error.message)?'Run the SQL update first (adds guest_categories), then try again.':error.message);return false}S=data;return true}
 async function catAdd(){const n=$('#nc_n').value.trim(),c=$('#nc_c').value;if(!n)return toast('Give the category a name.');
  if(cats().some(x=>x.n.toLowerCase()==n.toLowerCase()))return toast('That category already exists.');if(await catSave([...cats(),{n,c}]))render()}
 async function catEd(i,k,el){const a=cats().map(x=>({...x})),old=a[i].n;
@@ -542,12 +541,13 @@ async function catDel(i){const a=cats(),n=a[i].n,u=D.guests.filter(g=>g.category
  if(!confirm(`Delete "${n}"?`+(u?` ${u} guest(s) will become uncategorised.`:'')))return;if(!await catSave(a.filter((_,j)=>j!=i)))return;
  if(u){await sb.from('guests').update({category:null}).eq('category',n);D.guests.forEach(g=>{if(g.category==n)g.category=null})}if(gFilter==n)gFilter='';render()}
 async function addG(ix){const row={name:'',side:['partner 1','partner 2'][ix],rsvp:'pending'};if(gFilter)row.category=gFilter;
- const {data,error}=await sb.from('guests').insert(row).select().single();if(error)return toast(/category/.test(error.message)?'Run the SQL update first (adds category), then try again.':error.message);
+ const {data,error}=await sb.from('guests').insert(row).select().single();if(error)return toast(sqlHint(error.message)?'Run the SQL update first (adds category), then try again.':error.message);
  D.guests.push(data);gNew=data.id;await render();const el=document.querySelector(`tr[data-id="${data.id}"] input`);if(el){el.closest('tr').classList.add('open');el.focus();el.scrollIntoView({block:'center'})}}
 document.addEventListener('keydown',e=>{if(e.key!='Enter')return;const el=e.target;if(!el||el.tagName!='INPUT'||!el.closest('table.gt'))return;e.preventDefault();const id=el.closest('tr').dataset.id;el.blur();
  if(id==gNew)Promise.resolve(lastUpd).then(()=>{gNew=null;render()})});
 document.addEventListener('click',e=>{if(!gNew||!e.target.isConnected)return;const r=e.target.closest&&e.target.closest('tr[data-id]');if(r&&r.dataset.id==gNew)return;Promise.resolve(lastUpd).then(()=>{gNew=null;render()})});
 init();
+if('serviceWorker' in navigator&&/^https?:/.test(location.protocol))addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
 </script><!-- ============ Sticky notes (standalone feature: floating + button, Launchpad-style blurred overlay) ============ -->
 <style id="sn-style">
 #sn-root{position:relative;z-index:40;--fr:28px;--fb:calc(28px + env(safe-area-inset-bottom))}
@@ -655,7 +655,6 @@ const ld=()=>{try{const a=JSON.parse(localStorage.getItem(KEY));return Array.isA
 let notes=ld(),filter='',q='',isOpen=false,closing=false,undo=null,undoT=null,prevOv='';
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(notes))}catch(e){}};
 const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
-const hash=s=>[...s].reduce((a,c)=>(a*31+c.charCodeAt(0))|0,7);
 const dtx=t=>{const d=new Date(t),n=new Date();return d.toDateString()==n.toDateString()?'Today '+d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}):d.toLocaleDateString('en-GB',{day:'numeric',month:'short'})};
 const I={plus:'<svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>',note:'<svg viewBox="0 0 24 24"><path d="M5 4h14a1 1 0 0 1 1 1v9l-6 6H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1z"/><path d="M14 20v-5a1 1 0 0 1 1-1h5"/></svg>',search:'<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg>',pin:'<svg viewBox="0 0 24 24"><path d="M9 4h6l-1 6 3 3H7l3-3-1-6zM12 13v7"/></svg>',trash:'<svg viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-12M9 7V4h6v3"/></svg>'};
 const root=document.createElement('div');root.id='sn-root';
@@ -670,12 +669,12 @@ document.body.appendChild(root);
 const $=s=>root.querySelector(s),fab=$('.sn-fab'),ov=$('.sn-ov'),bd=$('.sn-bd'),panel=$('.sn-panel'),g=$('.sn-g'),pills=$('.sn-f'),ct=$('.sn-ct'),srch=$('.sn-s input'),ub=$('.sn-undo');
 const vis=()=>{const s=q.trim().toLowerCase();return notes.filter(n=>(!filter||n.c==filter)&&(!s||((n.t||'')+' '+(n.b||'')).toLowerCase().includes(s)))};
 const fit=ta=>{ta.style.height='auto';ta.style.height=Math.max(90,ta.scrollHeight)+'px'};
-function mk(n){const el=document.createElement('article');el.className='sn-n';el.dataset.id=n.id;el.style.setProperty('--nc',COL[n.c]||COL.y);el.style.setProperty('--rot',((Math.abs(hash(n.id))%5)-2)*.45+'deg');
+function mk(n){const el=document.createElement('article');el.className='sn-n';el.dataset.id=n.id;el.style.setProperty('--nc',COL[n.c]||COL.y);
  el.innerHTML=`<div class="sn-nh"><input class="sn-nt" placeholder="Title" maxlength="80" aria-label="Note title"><button class="sn-pin ${n.p?'on':''}" aria-label="Pin note" title="${n.p?'Unpin':'Pin to top'}">${I.pin}</button></div><textarea class="sn-nb" placeholder="Write anything…" aria-label="Note text"></textarea><div class="sn-nf"><span class="sn-dt">${dtx(n.u)}</span><div class="sn-dots">${KEYS.map(k=>`<button class="sn-dot ${k==n.c?'on':''}" data-c="${k}" style="background:${COL[k]}" aria-label="${NAMES[k]}" title="${NAMES[k]}"></button>`).join('')}</div><button class="sn-del" aria-label="Delete note" title="Delete">${I.trash}</button></div>`;
  el.querySelector('.sn-nt').value=n.t||'';el.querySelector('.sn-nb').value=n.b||'';return el}
 function drawF(){pills.innerHTML=`<button class="sn-p ${filter?'':'on'}" data-f="">All <b>${notes.length}</b></button>`+KEYS.map(k=>`<button class="sn-p ${filter==k?'on':''}" data-f="${k}" title="${NAMES[k]}" style="--c:${COL[k]}"><i></i><span class="sn-pn">${NAMES[k]}</span> <b>${notes.filter(n=>n.c==k).length}</b></button>`).join('');
  ct.textContent=notes.length?notes.length+(notes.length==1?' note':' notes'):''}
-const RM=matchMedia('(prefers-reduced-motion: reduce)').matches,D=n=>n;
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const A=(el,kf,o={})=>el.animate(kf,{duration:520,easing:EASE,fill:'backwards',...o});
 function draw(mode,fr){const before={};if(mode!='open')g.querySelectorAll('.sn-n').forEach(el=>before[el.dataset.id]=el.getBoundingClientRect());
  const list=vis();g.innerHTML='';
@@ -683,7 +682,7 @@ function draw(mode,fr){const before={};if(mode!='open')g.querySelectorAll('.sn-n
  list.forEach(n=>g.appendChild(mk(n)));g.querySelectorAll('.sn-nb').forEach(fit);drawF();
  if(mode=='open'){const e=g.querySelector('.sn-e');if(e)A(e,[{opacity:0,transform:'translateY(56px) scale(.985)'},{opacity:1,transform:'none'}],{delay:230,duration:620})}
  [...g.querySelectorAll('.sn-n')].forEach((el,i)=>{const id=el.dataset.id,o=before[id];
-  if(mode=='open'){const r=el.getBoundingClientRect(),dx=fr?fr.left+fr.width/2-(r.left+r.width/2):0,dy=fr?fr.top+fr.height/2-(r.top+r.height/2):0;A(el,[{opacity:0,transform:'translateY(56px) scale(.985)'},{opacity:1,transform:'none'}],{delay:230+Math.min(i,12)*70,duration:620})}
+  if(mode=='open'){A(el,[{opacity:0,transform:'translateY(56px) scale(.985)'},{opacity:1,transform:'none'}],{delay:230+Math.min(i,12)*70,duration:620})}
   else if(o){const r=el.getBoundingClientRect(),dx=o.left-r.left,dy=o.top-r.top;if(Math.abs(dx)>1||Math.abs(dy)>1)A(el,[{transform:`translate(${dx}px,${dy}px)`},{transform:'none'}],{duration:480})}
   else A(el,[{opacity:0,transform:'scale(.7) rotate(-4deg)'},{opacity:1,transform:'none'}],{duration:520})})}
 function add(){q='';srch.value='';const n={id:uid(),t:'',b:'',c:filter||'y',p:false,u:Date.now()},i=notes.findIndex(x=>!x.p);notes.splice(i<0?notes.length:i,0,n);save();draw('add');
@@ -697,7 +696,7 @@ g.addEventListener('input',e=>{const el=e.target.closest('.sn-n');if(!el)return;
  n.u=Date.now();el.querySelector('.sn-dt').textContent=dtx(n.u);save()});
 g.addEventListener('keydown',e=>{if(e.key=='Enter'&&e.target.classList.contains('sn-nt')){e.preventDefault();e.target.closest('.sn-n').querySelector('.sn-nb').focus()}});
 g.addEventListener('click',e=>{const el=e.target.closest('.sn-n');if(!el)return;const id=el.dataset.id,n=notes.find(x=>x.id==id);if(!n)return;
- if(e.target.closest('.sn-pin')){n.p=!n.p;notes.splice(notes.indexOf(n),1);const i=n.p?0:notes.findIndex(x=>!x.p);notes.splice(n.p?0:(i<0?notes.length:i),0,n);if(!n.p){/* unpinned: sit right after pinned group */}save();draw('pin')}
+ if(e.target.closest('.sn-pin')){n.p=!n.p;notes.splice(notes.indexOf(n),1);const i=n.p?0:notes.findIndex(x=>!x.p);notes.splice(n.p?0:(i<0?notes.length:i),0,n);save();draw('pin')}
  else if(e.target.closest('.sn-dot')){n.c=e.target.closest('.sn-dot').dataset.c;n.u=Date.now();save();el.style.setProperty('--nc',COL[n.c]);el.querySelectorAll('.sn-dot').forEach(d=>d.classList.toggle('on',d.dataset.c==n.c));drawF();if(filter&&filter!=n.c)draw('filter')}
  else if(e.target.closest('.sn-del'))del(id)});
 pills.addEventListener('click',e=>{const b=e.target.closest('.sn-p');if(!b)return;filter=b.dataset.f;draw('filter')});
@@ -709,7 +708,6 @@ const ghost=document.createElement('div');ghost.className='sn-ghost';ghost.hidde
 const dock=$('.sn-dock'),hdr=$('.sn-h'),xbtn=$('.sn-x');
 const cv=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
 const rk=r=>({left:r.left+'px',top:r.top+'px',width:r.width+'px',height:r.height+'px'});
-const noTr=(el,fn)=>{el.style.setProperty('transition','none','important');fn();void el.offsetWidth;el.style.removeProperty('transition')};
 const fabBox=()=>{const r=fab.getBoundingClientRect(),w=fab.offsetWidth,cx=r.left+r.width/2,cy=r.top+r.height/2;return{left:cx-w/2,top:cy-w/2,width:w,height:w}};
 const killGhost=()=>ghost.getAnimations({subtree:true}).forEach(a=>a.cancel());
 async function openP(){if(isOpen||closing)return;isOpen=true;setTop();prevOv=document.body.style.overflow;document.body.style.overflow='hidden';
@@ -728,7 +726,7 @@ async function openP(){if(isOpen||closing)return;isOpen=true;setTop();prevOv=doc
  panel.focus({preventScroll:true})}
 async function closeP(){if(!isOpen||closing)return;closing=true;ub.hidden=true;killGhost();fab.classList.remove('open');fab.setAttribute('aria-label','Open sticky notes');
  const fr=fabBox(),dr=dock.getBoundingClientRect(),br=getComputedStyle(dock).borderTopLeftRadius,an=[];
- [...g.querySelectorAll('.sn-n')].forEach((el,i)=>{const r=el.getBoundingClientRect(),dx=fr.left+fr.width/2-(r.left+r.width/2),dy=fr.top+fr.height/2-(r.top+r.height/2);
+ [...g.querySelectorAll('.sn-n')].forEach((el,i)=>{
   an.push(el.animate([{opacity:1,transform:'none'},{opacity:0,transform:'translateY(36px) scale(.985)'}],{duration:340,delay:Math.min(i,10)*25,easing:'cubic-bezier(.55,0,.8,.4)',fill:'forwards'}))});
  an.push(hdr.animate([{opacity:1,transform:'none'},{opacity:0,transform:'translateY(20px)'}],{duration:260,easing:'ease-in',fill:'forwards'}));
  {const e=g.querySelector('.sn-e');if(e)an.push(e.animate([{opacity:1,transform:'none'},{opacity:0,transform:'translateY(36px)'}],{duration:300,easing:'ease-in',fill:'forwards'}))}
@@ -746,7 +744,7 @@ panel.addEventListener('click',e=>{if([panel,g,$('.sn-h')].includes(e.target))cl
 addEventListener('keydown',e=>{if(e.key=='Escape'&&isOpen)closeP()});
 addEventListener('resize',()=>{if(isOpen)setTop();if(isOpen)g.querySelectorAll('.sn-nb').forEach(fit)});
 const mq=matchMedia('(max-width:760px)'),place=()=>{const top=document.querySelector('#app .top');
- if(mq.matches&&top){if(fab.parentNode!==top){top.insertBefore(fab,top.querySelector('.tg:not(.bg)'))}fab.classList.add('in-top')}
+ if(mq.matches&&top){if(fab.parentNode!==top){top.insertBefore(fab,top.querySelector('.tg'))}fab.classList.add('in-top')}
  else{if(fab.parentNode!==root)root.insertBefore(fab,root.firstChild);fab.classList.remove('in-top')}};
 const app=document.getElementById('app'),sync=()=>{place();const on=!!document.querySelector('#app .app');root.style.display=on?'':'none';if(!on&&isOpen){ov.hidden=true;ghost.hidden=true;document.body.style.overflow=prevOv;fab.classList.remove('open');isOpen=false;closing=false}};
 if(app)new MutationObserver(sync).observe(app,{childList:true});(mq.addEventListener?mq.addEventListener('change',sync):mq.addListener(sync));sync();
